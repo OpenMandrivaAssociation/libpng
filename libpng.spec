@@ -122,10 +122,8 @@ ln -s scripts/makefile.linux ./Makefile
 make check
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
-
+rm -rf %{buildroot}
 install -d %{buildroot}%{_prefix}
-
 %makeinstall
 
 install -d %{buildroot}%{_mandir}/man{3,5}
@@ -143,7 +141,7 @@ rm -rf %{buildroot}{%{_prefix}/man,%{_libdir}/lib*.la}
 %postun -n %{lib_name} -p /sbin/ldconfig
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files -n %{lib_name}
 %defattr(-,root,root)
