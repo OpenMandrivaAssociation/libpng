@@ -123,7 +123,6 @@ make check
 
 %install
 rm -rf %{buildroot}
-install -d %{buildroot}%{_prefix}
 %makeinstall
 
 install -d %{buildroot}%{_mandir}/man{3,5}
