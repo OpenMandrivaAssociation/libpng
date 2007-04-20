@@ -4,13 +4,11 @@
 
 Summary: 	A library of functions for manipulating PNG image format files
 Name: 		libpng
-Version: 	1.2.13
-Release:	%mkrel 2
+Version: 	1.2.16
+Release:	%mkrel 1
 License: 	GPL-like
 Group: 		System/Libraries
 BuildRequires: 	zlib-devel
-#gw temporarily until rpm-mandriva-setup-build-1.36-2mdv is available
-BuildRequires:  pkgconfig
 URL: 		http://www.libpng.org/pub/png/libpng.html
 Source: 	http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
 Patch0:		libpng-1.2.10-mdkconf.patch
