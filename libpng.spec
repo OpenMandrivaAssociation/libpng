@@ -5,7 +5,7 @@
 Summary: 	A library of functions for manipulating PNG image format files
 Name: 		libpng
 Version: 	1.2.18
-Release:	%mkrel 1
+Release:	%mkrel 2
 License: 	GPL-like
 Group: 		System/Libraries
 BuildRequires: 	zlib-devel
@@ -64,6 +64,13 @@ Provides:	png-static-devel = %{epoch}:%{version}-%{release}
 %description -n	%{lib_name}-static-devel
 Libpng development static libraries.
 
+%package -n	%{lib_name_orig}-source
+Summary:	Source code of %{lib_name_orig}
+Group:		Development/C
+
+%description -n	%{lib_name_orig}-source
+This package contains the source code of %{lib_name_orig}.
+
 %prep
 %setup -q
 %patch0 -p1 -b .mdkconf
@@ -88,6 +95,9 @@ rm -rf %{buildroot}
 install -d %{buildroot}%{_mandir}/man{3,5}
 install -m0644 {libpng,libpngpf}.3 %{buildroot}%{_mandir}/man3
 install -m0644 png.5 %{buildroot}%{_mandir}/man5/png3.5
+
+install -d %{buildroot}%{_prefix}/src/%{lib_name_orig}
+cp -a *.c *.h %{buildroot}%{_prefix}/src/%{lib_name_orig}
 
 # remove unpackaged files
 rm -rf %{buildroot}{%{_prefix}/man,%{_libdir}/lib*.la}
@@ -125,3 +135,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %doc README
 %{_libdir}/libpng*.a
+
+%files -n %{lib_name_orig}-source
+%defattr(-,root,root)
+%{_prefix}/src/%{lib_name_orig}
