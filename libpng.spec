@@ -5,7 +5,7 @@
 Summary: 	A library of functions for manipulating PNG image format files
 Name: 		libpng
 Version: 	1.2.18
-Release:	%mkrel 2
+Release:	%mkrel 3
 License: 	GPL-like
 Group: 		System/Libraries
 BuildRequires: 	zlib-devel
@@ -117,7 +117,6 @@ rm -rf %{buildroot}
 %doc *.txt example.c README TODO CHANGES
 %{_libdir}/libpng12.so.*
 %{_libdir}/libpng.so.*
-%{_mandir}/man5/*
 
 %files -n %{lib_name}-devel
 %defattr(-,root,root)
@@ -130,6 +129,7 @@ rm -rf %{buildroot}
 %{_libdir}/libpng.so
 %{_libdir}/pkgconfig/*
 %{_mandir}/man3/*
+%{_mandir}/man5/*
 
 %files -n %{lib_name}-static-devel
 %defattr(-,root,root)
