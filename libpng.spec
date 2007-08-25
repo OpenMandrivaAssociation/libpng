@@ -13,7 +13,6 @@ URL: 		http://www.libpng.org/pub/png/libpng.html
 Source: 	http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
 Patch0:		libpng-1.2.10-mdkconf.patch
 Patch1:		libpng-1.2.10-lib64.patch
-Patch2:		libpng-1.2.12-x86-32-mmx.patch
 Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Epoch: 		2
 
@@ -75,7 +74,6 @@ This package contains the source code of %{lib_name_orig}.
 %setup -q
 %patch0 -p1 -b .mdkconf
 %patch1 -p1 -b .lib64
-%patch2 -p1 -b .x86-32-mmx
 
 perl -pi -e 's|^prefix=.*|prefix=%{_prefix}|' scripts/makefile.linux
 perl -pi -e 's|^(LIBPATH=.*)/lib\b|\1/%{_lib}|' scripts/makefile.linux
