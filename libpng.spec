@@ -41,7 +41,8 @@ linked with libpng.
 %package -n	%{lib_devel}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
-Requires:	%{lib_name} = %{epoch}:%{version}-%{release} zlib-devel
+Requires:	%{lib_name} = %{epoch}:%{version}-%{release}
+Requires:	zlib-devel
 Obsoletes:	%{lib_name_orig}-devel
 Provides:	%{lib_name_orig}-devel = %{epoch}:%{version}-%{release}
 Provides:	png-devel = %{epoch}:%{version}-%{release}
@@ -60,10 +61,12 @@ libpng package.
 %package -n	%{lib_static}
 Summary:	Development static libraries
 Group:		Development/C
-Requires:	%{lib_name_orig}-devel = %{epoch}:%{version}-%{release} zlib-devel
+Requires:	%{lib_name_orig}-devel = %{epoch}:%{version}-%{release}
+Requires:	zlib-devel
 Provides:	%{lib_name_orig}-static-devel = %{epoch}:%{version}-%{release}
 Provides:	png-static-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%mklibname png 3 -d -s
+Provides:	%mklibname png 3 -d -s
 
 %description -n	%{lib_static}
 Libpng development static libraries.
@@ -77,7 +80,7 @@ This package contains the source code of %{lib_name_orig}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .MAKEFILE
+%patch0 -p1 -b .makefile
 %patch1 -p1 -b .lib64
 
 perl -pi -e 's|^prefix=.*|prefix=%{_prefix}|' scripts/makefile.linux
@@ -85,6 +88,12 @@ perl -pi -e 's|^(LIBPATH=.*)/lib\b|\1/%{_lib}|' scripts/makefile.linux
 ln -s scripts/makefile.linux ./Makefile
 
 %build
+%ifarch x86_64
+export CFLAGS="%{optflags} -DPNG_NO_MMX_CODE"
+%else
+export CFLAGS="%{optflags}"
+%endif
+
 %configure2_5x
 %make
 
