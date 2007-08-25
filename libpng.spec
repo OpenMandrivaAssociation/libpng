@@ -7,7 +7,7 @@
 Summary: 	A library of functions for manipulating PNG image format files
 Name: 		libpng
 Version: 	1.2.19
-Release:	%mkrel 1
+Release:	%mkrel 2
 License: 	GPL-like
 Group: 		System/Libraries
 BuildRequires: 	zlib-devel
@@ -43,7 +43,6 @@ Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
 Requires:	%{lib_name} = %{epoch}:%{version}-%{release}
 Requires:	zlib-devel
-Obsoletes:	%{lib_name_orig}-devel
 Provides:	%{lib_name_orig}-devel = %{epoch}:%{version}-%{release}
 Provides:	png-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%mklibname png 3 -d
