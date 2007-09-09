@@ -6,8 +6,8 @@
 
 Summary: 	A library of functions for manipulating PNG image format files
 Name: 		libpng
-Version: 	1.2.19
-Release:	%mkrel 2
+Version: 	1.2.20
+Release:	%mkrel 1
 License: 	GPL-like
 Group: 		System/Libraries
 BuildRequires: 	zlib-devel
