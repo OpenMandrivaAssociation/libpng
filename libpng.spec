@@ -13,8 +13,6 @@ Group: 		System/Libraries
 BuildRequires: 	zlib-devel
 URL: 		http://www.libpng.org/pub/png/libpng.html
 Source: 	http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
-Patch0:		libpng-1.2.19-makefile.patch
-Patch1:		libpng-1.2.10-lib64.patch
 Epoch: 		2
 Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -31,7 +29,6 @@ files.
 %package -n	%{lib_name}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
-Obsoletes:	%{lib_name_orig}
 Provides:	%{lib_name_orig} = %{epoch}:%{version}-%{release}
 
 %description -n	%{lib_name}
@@ -79,21 +76,10 @@ This package contains the source code of %{lib_name_orig}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .makefile
-%patch1 -p1 -b .lib64
-
-perl -pi -e 's|^prefix=.*|prefix=%{_prefix}|' scripts/makefile.linux
-perl -pi -e 's|^(LIBPATH=.*)/lib\b|\1/%{_lib}|' scripts/makefile.linux
-ln -s scripts/makefile.linux ./Makefile
 
 %build
-%ifarch ix86
-ln -sf scripts/makefile.gcmmx ./Makefile
-%else
-ln -sf scripts/makefile.linux ./Makefile
-%endif
 
-%ifnarch ix86
+%ifnarch %{ix86}
 export CFLAGS="%{optflags} -DPNG_NO_MMX_CODE"
 %else
 export CFLAGS="%{optflags}"
@@ -144,8 +130,7 @@ rm -rf %{buildroot}
 %{_libdir}/libpng12.so
 %{_libdir}/libpng.so
 %{_libdir}/pkgconfig/*
-%{_mandir}/man3/*
-%{_mandir}/man5/*
+%{_mandir}/man?/*
 
 %files -n %{lib_static}
 %defattr(-,root,root)
