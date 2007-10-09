@@ -87,7 +87,13 @@ perl -pi -e 's|^(LIBPATH=.*)/lib\b|\1/%{_lib}|' scripts/makefile.linux
 ln -s scripts/makefile.linux ./Makefile
 
 %build
-%ifarch x86_64
+%ifarch ix86
+ln -sf scripts/makefile.gcmmx ./Makefile
+%else
+ln -sf scripts/makefile.linux ./Makefile
+%endif
+
+%ifnarch ix86
 export CFLAGS="%{optflags} -DPNG_NO_MMX_CODE"
 %else
 export CFLAGS="%{optflags}"
