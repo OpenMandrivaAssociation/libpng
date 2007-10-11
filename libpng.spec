@@ -1,4 +1,5 @@
 %define lib_name_orig	libpng
+%define prel rc1
 %define major		3
 %define lib_name	%mklibname png %{major}
 %define lib_devel	%mklibname png -d
@@ -6,13 +7,13 @@
 
 Summary: 	A library of functions for manipulating PNG image format files
 Name: 		libpng
-Version: 	1.2.21
-Release:	%mkrel 1
+Version: 	1.2.22
+Release:	%mkrel 0.%{prel}.1
 License: 	GPL-like
 Group: 		System/Libraries
 BuildRequires: 	zlib-devel
 URL: 		http://www.libpng.org/pub/png/libpng.html
-Source: 	http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
+Source: 	http://prdownloads.sourceforge.net/libpng/%{name}-%{version}%{prel}.tar.bz2
 Epoch: 		2
 Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -75,7 +76,7 @@ Group:		Development/C
 This package contains the source code of %{lib_name_orig}.
 
 %prep
-%setup -q
+%setup -qn %{name}-%{version}%{prel}
 
 %build
 
