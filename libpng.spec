@@ -1,20 +1,20 @@
-%define lib_name_orig	libpng
-%define major		3
-%define lib_name	%mklibname png %{major}
-%define lib_devel	%mklibname png -d
-%define lib_static	%mklibname png -d -s
+%define libname_orig libpng
+%define major 3
+%define libname	%mklibname png %{major}
+%define develname %mklibname png -d
+%define staticname %mklibname png -d -s
 
-Summary: 	A library of functions for manipulating PNG image format files
-Name: 		libpng
-Version: 	1.2.22
+Summary:	A library of functions for manipulating PNG image format files
+Name:		libpng
+Version:	1.2.23
 Release:	%mkrel 1
-License: 	GPL-like
-Group: 		System/Libraries
+Epoch:		2
+License:	GPL-like
+Group:		System/Libraries
+URL:		http://www.libpng.org/pub/png/libpng.html
+Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
 BuildRequires: 	zlib-devel
-URL: 		http://www.libpng.org/pub/png/libpng.html
-Source: 	http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
-Epoch: 		2
-Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The libpng package contains a library of functions for creating and
@@ -26,26 +26,26 @@ algorithm.
 Libpng should be installed if you need to manipulate PNG format image
 files.
 
-%package -n	%{lib_name}
+%package -n %{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
-Provides:	%{lib_name_orig} = %{epoch}:%{version}-%{release}
+Provides:	%{libname_orig} = %{epoch}:%{version}-%{release}
 
-%description -n	%{lib_name}
+%description -n	%{libname}
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
-%package -n	%{lib_devel}
+%package -n %{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
-Requires:	%{lib_name} = %{epoch}:%{version}-%{release}
+Requires:	%{libname} = %{epoch}:%{version}-%{release}
 Requires:	zlib-devel
-Provides:	%{lib_name_orig}-devel = %{epoch}:%{version}-%{release}
+Provides:	%{libname_orig}-devel = %{epoch}:%{version}-%{release}
 Provides:	png-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%mklibname png 3 -d
 Provides:	%mklibname png 3 -d
 
-%description -n	%{lib_devel}
+%description -n	%{develname}
 The libpng-devel package contains the header files and libraries
 necessary for developing programs using the PNG (Portable Network
 Graphics) library.
@@ -54,28 +54,28 @@ If you want to develop programs which will manipulate PNG image format
 files, you should install libpng-devel.  You'll also need to install the
 libpng package.
 
-%package -n	%{lib_static}
+%package -n %{staticname}
 Summary:	Development static libraries
 Group:		Development/C
-Requires:	%{lib_name_orig}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{develname} = %{epoch}:%{version}-%{release}
 Requires:	zlib-devel
-Provides:	%{lib_name_orig}-static-devel = %{epoch}:%{version}-%{release}
+Provides:	%{libname_orig}-static-devel = %{epoch}:%{version}-%{release}
 Provides:	png-static-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%mklibname png 3 -d -s
 Provides:	%mklibname png 3 -d -s
 
-%description -n	%{lib_static}
+%description -n	%{staticname}
 Libpng development static libraries.
 
-%package -n	%{lib_name_orig}-source
-Summary:	Source code of %{lib_name_orig}
+%package -n	%{libname_orig}-source
+Summary:	Source code of %{libname_orig}
 Group:		Development/C
 
-%description -n	%{lib_name_orig}-source
-This package contains the source code of %{lib_name_orig}.
+%description -n	%{libname_orig}-source
+This package contains the source code of %{libname_orig}.
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -q
 
 %build
 
@@ -99,8 +99,8 @@ install -d %{buildroot}%{_mandir}/man{3,5}
 install -m0644 {libpng,libpngpf}.3 %{buildroot}%{_mandir}/man3
 install -m0644 png.5 %{buildroot}%{_mandir}/man5/png3.5
 
-install -d %{buildroot}%{_prefix}/src/%{lib_name_orig}
-cp -a *.c *.h %{buildroot}%{_prefix}/src/%{lib_name_orig}
+install -d %{buildroot}%{_prefix}/src/%{libname_orig}
+cp -a *.c *.h %{buildroot}%{_prefix}/src/%{libname_orig}
 
 # remove unpackaged files
 rm -rf %{buildroot}{%{_prefix}/man,%{_libdir}/lib*.la}
@@ -108,19 +108,19 @@ rm -rf %{buildroot}{%{_prefix}/man,%{_libdir}/lib*.la}
 #multiarch
 %multiarch_binaries %{buildroot}%{_bindir}/libpng12-config
 
-%post -n %{lib_name} -p /sbin/ldconfig
+%post -n %{libname} -p /sbin/ldconfig
 
-%postun -n %{lib_name} -p /sbin/ldconfig
+%postun -n %{libname} -p /sbin/ldconfig
 
 %clean
 rm -rf %{buildroot}
 
-%files -n %{lib_name}
+%files -n %{libname}
 %defattr(-,root,root)
 %{_libdir}/*.so.%{major}*
 %{_libdir}/libpng12.so.*
 
-%files -n %{lib_devel}
+%files -n %{develname}
 %defattr(-,root,root)
 %doc *.txt example.c README TODO CHANGES
 %{_bindir}/libpng-config
@@ -132,11 +132,11 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/*
 %{_mandir}/man?/*
 
-%files -n %{lib_static}
+%files -n %{staticname}
 %defattr(-,root,root)
 %doc README
 %{_libdir}/libpng*.a
 
-%files -n %{lib_name_orig}-source
+%files -n %{libname_orig}-source
 %defattr(-,root,root)
-%{_prefix}/src/%{lib_name_orig}
+%{_prefix}/src/%{libname_orig}
