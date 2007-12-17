@@ -14,7 +14,6 @@ Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
 Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
 BuildRequires: 	zlib-devel
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The libpng package contains a library of functions for creating and
