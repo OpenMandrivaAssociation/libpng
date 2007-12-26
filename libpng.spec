@@ -6,10 +6,10 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.2.23
+Version:	1.2.24
 Release:	%mkrel 1
 Epoch:		2
-License:	GPL-like
+License:	zlib
 Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
 Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
