@@ -6,7 +6,7 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.2.24
+Version:	1.2.25
 Release:	%mkrel 1
 Epoch:		2
 License:	zlib
@@ -134,7 +134,6 @@ rm -rf %{buildroot}
 
 %files -n %{staticname}
 %defattr(-,root,root)
-%doc README
 %{_libdir}/libpng*.a
 
 %files -n %{libname_orig}-source
