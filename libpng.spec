@@ -13,6 +13,8 @@ License:	zlib
 Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
 Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
+#(tpg) APNG support http://littlesvr.ca/apng/diff/libpng-1.2.24-apng.patch
+Patch0:		libpng-1.2.24-apng.patch
 BuildRequires: 	zlib-devel
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -76,6 +78,7 @@ This package contains the source code of %{libname_orig}.
 
 %prep
 %setup -q
+%patch0 -p0 -b .apng
 
 %build
 
