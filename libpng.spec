@@ -6,15 +6,15 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.2.25
-Release:	%mkrel 3
+Version:	1.2.28
+Release:	%mkrel 1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
 Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.bz2
 #(tpg) APNG support http://littlesvr.ca/apng/
-Patch0:		libpng-1.2.25-apng.patch
+Patch0:		libpng-1.2.26-apng.patch
 BuildRequires: 	zlib-devel
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -88,6 +88,7 @@ export CFLAGS="%{optflags} -DPNG_NO_MMX_CODE"
 export CFLAGS="%{optflags}"
 %endif
 
+./autogen.sh
 %configure2_5x
 %make
 
