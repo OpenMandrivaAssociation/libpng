@@ -14,7 +14,7 @@ Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
 Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.lzma
 #(tpg) APNG support http://littlesvr.ca/apng/
-Patch0:		libpng-1.2.26-apng.patch
+Patch0:		libpng-1.2.31-apng.patch
 BuildRequires: 	zlib-devel
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
