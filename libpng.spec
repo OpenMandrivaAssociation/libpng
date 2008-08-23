@@ -6,7 +6,7 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.2.30
+Version:	1.2.31
 Release:	%mkrel 1
 Epoch:		2
 License:	zlib
@@ -44,7 +44,7 @@ Requires:	%{libname} = %{epoch}:%{version}-%{release}
 Requires:	zlib-devel
 Provides:	%{libname_orig}-devel = %{epoch}:%{version}-%{release}
 Provides:	png-devel = %{epoch}:%{version}-%{release}
-Obsoletes:	%mklibname png 3 -d
+Obsoletes:	%{mklibname png 3 -d} < 1.2.30
 Provides:	%mklibname png 3 -d
 
 %description -n	%{develname}
@@ -63,7 +63,7 @@ Requires:	%{develname} = %{epoch}:%{version}-%{release}
 Requires:	zlib-devel
 Provides:	%{libname_orig}-static-devel = %{epoch}:%{version}-%{release}
 Provides:	png-static-devel = %{epoch}:%{version}-%{release}
-Obsoletes:	%mklibname png 3 -d -s
+Obsoletes:	%{mklibname png 3 -d -s} < 1.2.30
 Provides:	%mklibname png 3 -d -s
 
 %description -n	%{staticname}
