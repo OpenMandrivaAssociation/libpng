@@ -7,7 +7,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.2.33
-Release:	%mkrel 2
+Release:	%mkrel 3
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -18,7 +18,7 @@ Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.lzma
 Patch0:		libpng-1.2.32-apng.patch
 Patch1:		libpng-1.2.33-pngconf-setjmp.patch
 BuildRequires: 	zlib-devel
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 The libpng package contains a library of functions for creating and
