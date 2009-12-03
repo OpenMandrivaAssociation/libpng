@@ -105,6 +105,7 @@ cd ..
 
 mkdir -p shared
 cd shared
+CFLAGS="%{optflags} -O3 -funroll-loops" \
 %configure2_5x
 %make
 cd ..
