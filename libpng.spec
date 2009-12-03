@@ -4,6 +4,8 @@
 %define develname %mklibname png -d
 %define staticname %mklibname png -d -s
 
+%bcond_without	uclibc
+
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.2.40
@@ -19,6 +21,9 @@ Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.xz
 Patch0:		libpng-1.2.40-apng.patch
 Patch1:		libpng-1.2.36-pngconf-setjmp.patch
 BuildRequires: 	zlib-devel
+%if %{with uclibc}
+BuildRequires:	uClibc-devel
+%endif
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -31,7 +36,7 @@ algorithm.
 Libpng should be installed if you need to manipulate PNG format image
 files.
 
-%package -n %{libname}
+%package -n	%{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
 Provides:	%{libname_orig} = %{epoch}:%{version}-%{release}
@@ -40,7 +45,7 @@ Provides:	%{libname_orig} = %{epoch}:%{version}-%{release}
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
-%package -n %{develname}
+%package -n	%{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
 Requires:	%{libname} = %{epoch}:%{version}-%{release}
@@ -59,7 +64,7 @@ If you want to develop programs which will manipulate PNG image format
 files, you should install libpng-devel.  You'll also need to install the
 libpng package.
 
-%package -n %{staticname}
+%package -n	%{staticname}
 Summary:	Development static libraries
 Group:		Development/C
 Requires:	%{develname} = %{epoch}:%{version}-%{release}
@@ -83,25 +88,43 @@ This package contains the source code of %{libname_orig}.
 %setup -q
 %patch0 -p1 -b .apng
 %patch1 -p0 -b .pngconf-setjmp
+./autogen.sh
 
 %build
+export CONFIGURE_TOP=`pwd`
+%if %{with uclibc}
+mkdir -p uclibc
+cd uclibc
+%configure2_5x	CC="%{uclibc_cc}" \
+		CFLAGS="%{uclibc_cflags}" \
+		--enable-shared=no \
+		--enable-static=yes
+%make
+cd ..
+%endif
 
+mkdir -p shared
+cd shared
 %ifnarch %{ix86}
 export CFLAGS="%{optflags} -DPNG_NO_MMX_CODE"
 %else
 export CFLAGS="%{optflags}"
 %endif
 
-./autogen.sh
 %configure2_5x
 %make
+cd ..
 
 %check
-make check
+make -C shared check
 
 %install
 rm -rf %{buildroot}
-%makeinstall_std
+%makeinstall_std -C shared
+%if %{with uclibc}
+install -m644 uclibc/.libs/libpng12.a -D %{buildroot}%{uclibc_root}%{_libdir}/libpng12.a
+ln -s libpng12.a %{buildroot}%{uclibc_root}%{_libdir}/libpng.a
+%endif
 
 install -d %{buildroot}%{_mandir}/man{3,5}
 install -m0644 {libpng,libpngpf}.3 %{buildroot}%{_mandir}/man3
@@ -147,6 +170,7 @@ rm -rf %{buildroot}
 %files -n %{staticname}
 %defattr(-,root,root)
 %{_libdir}/libpng*.a
+%{uclibc_root}%{_libdir}/libpng*.a
 
 %files -n %{libname_orig}-source
 %defattr(-,root,root)
