@@ -105,12 +105,6 @@ cd ..
 
 mkdir -p shared
 cd shared
-%ifnarch %{ix86}
-export CFLAGS="%{optflags} -DPNG_NO_MMX_CODE"
-%else
-export CFLAGS="%{optflags}"
-%endif
-
 %configure2_5x
 %make
 cd ..
