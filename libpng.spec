@@ -98,7 +98,8 @@ cd uclibc
 %configure2_5x	CC="%{uclibc_cc}" \
 		CFLAGS="%{uclibc_cflags}" \
 		--enable-shared=no \
-		--enable-static=yes
+		--enable-static=yes \
+		--with-pic
 %make
 cd ..
 %endif
@@ -106,7 +107,7 @@ cd ..
 mkdir -p shared
 cd shared
 CFLAGS="%{optflags} -O3 -funroll-loops" \
-%configure2_5x
+%configure2_5x	--with-pic
 %make
 cd ..
 
