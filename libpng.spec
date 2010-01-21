@@ -166,7 +166,9 @@ rm -rf %{buildroot}
 %files -n %{staticname}
 %defattr(-,root,root)
 %{_libdir}/libpng*.a
+%if %{with uclibc}
 %{uclibc_root}%{_libdir}/libpng*.a
+%endif
 
 %files -n %{libname_orig}-source
 %defattr(-,root,root)
