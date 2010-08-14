@@ -9,7 +9,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.2.44
-Release:	%mkrel 1
+Release:	%mkrel 2
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -20,6 +20,7 @@ Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.xz
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		libpng-1.2.44-apng.patch
 Patch1:		libpng-1.2.36-pngconf-setjmp.patch
+Patch2:		libpng-1.2.44-CVE-2008-6218.diff
 BuildRequires: 	zlib-devel
 %if %{with uclibc}
 BuildRequires:	uClibc-devel
@@ -88,6 +89,7 @@ This package contains the source code of %{libname_orig}.
 %setup -q
 %patch0 -p1 -b .apng
 %patch1 -p0 -b .pngconf-setjmp
+%patch2 -p0 -b .CVE-2008-6218
 ./autogen.sh
 
 %build
