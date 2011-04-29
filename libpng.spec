@@ -158,7 +158,7 @@ rm -rf %{buildroot}
 %doc *.txt example.c README TODO CHANGES
 %{_bindir}/libpng-config
 %{_bindir}/libpng12-config
-%multiarch %{multiarch_bindir}/libpng12-config
+%{multiarch_bindir}/libpng12-config
 %{_includedir}/*
 %{_libdir}/libpng12.so
 %{_libdir}/libpng.so
