@@ -8,13 +8,13 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.2.44
-Release:	%mkrel 3
+Version:	1.2.46
+Release:	%mkrel 1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
-Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.xz
+Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.gz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
