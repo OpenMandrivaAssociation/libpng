@@ -1,31 +1,25 @@
-%define libname_orig libpng
-%define major 3
-%define libname	%mklibname png %{major}
+%define major 15
+%define libname	%mklibname png %{major} %{major}
 %define develname %mklibname png -d
 %define staticname %mklibname png -d -s
 
-%bcond_without	uclibc
-
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.2.46
+Version:	1.5.4
 Release:	%mkrel 1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
-Source:		http://prdownloads.sourceforge.net/libpng/%{name}-%{version}.tar.gz
+Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		libpng-1.2.44-apng.patch
-Patch1:		libpng-1.2.36-pngconf-setjmp.patch
-Patch2:		libpng-1.2.44-CVE-2008-6218.diff
+Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-%{version}-apng.patch.gz
+Patch1:		libpng-1.5.4-cmake-fixes.patch
+Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
 BuildRequires: 	zlib-devel
-%if %{with uclibc}
-BuildRequires:	uClibc-devel
-%endif
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires:	cmake
 
 %description
 The libpng package contains a library of functions for creating and
@@ -37,21 +31,20 @@ algorithm.
 Libpng should be installed if you need to manipulate PNG format image
 files.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
-Provides:	%{libname_orig} = %{epoch}:%{version}-%{release}
+Obsoletes:	%{_lib}png3 < 2:1.2.46-2
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
-%package -n	%{develname}
+%package -n %{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
-Requires:	%{libname} = %{epoch}:%{version}-%{release}
-Requires:	zlib-devel
-Provides:	%{libname_orig}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{libname} = %{epoch}:%{version}
+Provides:	%{name}-devel = %{epoch}:%{version}-%{release}
 Provides:	png-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%{mklibname png 3 -d} < 1.2.30
 Provides:	%mklibname png 3 -d
@@ -65,12 +58,11 @@ If you want to develop programs which will manipulate PNG image format
 files, you should install libpng-devel.  You'll also need to install the
 libpng package.
 
-%package -n	%{staticname}
+%package -n %{staticname}
 Summary:	Development static libraries
 Group:		Development/C
-Requires:	%{develname} = %{epoch}:%{version}-%{release}
-Requires:	zlib-devel
-Provides:	%{libname_orig}-static-devel = %{epoch}:%{version}-%{release}
+Requires:	%{develname} = %{epoch}:%{version}
+Provides:	%{name}-static-devel = %{epoch}:%{version}-%{release}
 Provides:	png-static-devel = %{epoch}:%{version}-%{release}
 Obsoletes:	%{mklibname png 3 -d -s} < 1.2.30
 Provides:	%mklibname png 3 -d -s
@@ -78,64 +70,38 @@ Provides:	%mklibname png 3 -d -s
 %description -n	%{staticname}
 Libpng development static libraries.
 
-%package -n	%{libname_orig}-source
-Summary:	Source code of %{libname_orig}
+%package source
+Summary:	Source code of %{name}
 Group:		Development/C
 
-%description -n	%{libname_orig}-source
-This package contains the source code of %{libname_orig}.
+%description source
+This package contains the source code of %{name}.
 
 %prep
 %setup -q
 %patch0 -p1 -b .apng
-%patch1 -p0 -b .pngconf-setjmp
-%patch2 -p0 -b .CVE-2008-6218
-./autogen.sh
+%patch1 -p0 -b .fix-symlink
+%patch2 -p0 -b .fix-cmake-files-libpath
 
 %build
-export CONFIGURE_TOP=`pwd`
-%if %{with uclibc}
-mkdir -p uclibc
-cd uclibc
-%configure2_5x	CC="%{uclibc_cc}" \
-		CFLAGS="%{uclibc_cflags}" \
-		--enable-shared=no \
-		--enable-static=yes \
-		--with-pic
+export CFLAGS="%{optflags} -O3 -funroll-loops"
+%cmake \
+  -DPNG_SHARED:BOOL=ON \
+  -DPNG_STATIC:BOOL=ON
 %make
-cd ..
-%endif
-
-mkdir -p shared
-cd shared
-CFLAGS="%{optflags} -O3 -funroll-loops" \
-%configure2_5x	--with-pic
-%make
-cd ..
-
-%check
-make -C shared check
 
 %install
 rm -rf %{buildroot}
-%makeinstall_std -C shared
-%if %{with uclibc}
-install -m644 uclibc/.libs/libpng12.a -D %{buildroot}%{uclibc_root}%{_libdir}/libpng12.a
-ln -s libpng12.a %{buildroot}%{uclibc_root}%{_libdir}/libpng.a
-%endif
+%makeinstall_std -C build
 
-install -d %{buildroot}%{_mandir}/man{3,5}
-install -m0644 {libpng,libpngpf}.3 %{buildroot}%{_mandir}/man3
-install -m0644 png.5 %{buildroot}%{_mandir}/man5/png3.5
+# die, die, die
+rm -f %buildroot%_libdir/*.la
 
-install -d %{buildroot}%{_prefix}/src/%{libname_orig}
-cp -a *.c *.h %{buildroot}%{_prefix}/src/%{libname_orig}
-
-# remove unpackaged files
-rm -rf %{buildroot}{%{_prefix}/man,%{_libdir}/lib*.la}
+install -d %{buildroot}%{_prefix}/src/%{name}
+cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
 #multiarch
-%multiarch_binaries %{buildroot}%{_bindir}/libpng12-config
+%multiarch_binaries %{buildroot}%{_bindir}/libpng%{major}-config
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
@@ -145,33 +111,29 @@ rm -rf %{buildroot}{%{_prefix}/man,%{_libdir}/lib*.la}
 %postun -n %{libname} -p /sbin/ldconfig
 %endif
 
-%clean
-rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root)
-%{_libdir}/*.so.%{major}*
-%{_libdir}/libpng12.so.*
+%{_libdir}/libpng%{major}.so.%{major}*
 
 %files -n %{develname}
 %defattr(-,root,root)
 %doc *.txt example.c README TODO CHANGES
 %{_bindir}/libpng-config
-%{_bindir}/libpng12-config
-%{multiarch_bindir}/libpng12-config
+%{_bindir}/libpng%{major}-config
 %{_includedir}/*
-%{_libdir}/libpng12.so
+%{_libdir}/libpng%{major}.so
 %{_libdir}/libpng.so
-%{_libdir}/pkgconfig/*
+%{_libdir}/libpng/libpng%{major}*.cmake
+%{_libdir}/pkgconfig/libpng*.pc
 %{_mandir}/man?/*
+%multiarch %{multiarch_bindir}/libpng%{major}-config
 
 %files -n %{staticname}
 %defattr(-,root,root)
-%{_libdir}/libpng*.a
-%if %{with uclibc}
-%{uclibc_root}%{_libdir}/libpng*.a
-%endif
+%{_libdir}/libpng.a
+%{_libdir}/libpng%{major}.a
 
-%files -n %{libname_orig}-source
+%files source
 %defattr(-,root,root)
-%{_prefix}/src/%{libname_orig}
+%{_prefix}/src/%{name}/
