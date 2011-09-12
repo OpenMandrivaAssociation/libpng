@@ -6,7 +6,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.4
-Release:	%mkrel 1
+Release:	2
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -34,7 +34,6 @@ files.
 %package -n %{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
-Obsoletes:	%{_lib}png3 < 2:1.2.46-2
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
