@@ -31,7 +31,7 @@ algorithm.
 Libpng should be installed if you need to manipulate PNG format image
 files.
 
-%package -n %{libname}
+%package -n	%{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
 
@@ -39,7 +39,7 @@ Group:		System/Libraries
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
-%package -n %{develname}
+%package -n	%{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
 Requires:	%{libname} = %{epoch}:%{version}
@@ -57,7 +57,7 @@ If you want to develop programs which will manipulate PNG image format
 files, you should install libpng-devel.  You'll also need to install the
 libpng package.
 
-%package -n %{staticname}
+%package -n	%{staticname}
 Summary:	Development static libraries
 Group:		Development/C
 Requires:	%{develname} = %{epoch}:%{version}
@@ -69,11 +69,11 @@ Provides:	%mklibname png 3 -d -s
 %description -n	%{staticname}
 Libpng development static libraries.
 
-%package source
+%package	source
 Summary:	Source code of %{name}
 Group:		Development/C
 
-%description source
+%description	source
 This package contains the source code of %{name}.
 
 %prep
@@ -90,7 +90,6 @@ export CFLAGS="%{optflags} -O3 -funroll-loops"
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std -C build
 
 # die, die, die
@@ -102,21 +101,10 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 #multiarch
 %multiarch_binaries %{buildroot}%{_bindir}/libpng%{major}-config
 
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-
 %files -n %{libname}
-%defattr(-,root,root)
 %{_libdir}/libpng%{major}.so.%{major}*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %doc *.txt example.c README TODO CHANGES
 %{_bindir}/libpng-config
 %{_bindir}/libpng%{major}-config
@@ -129,10 +117,8 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %multiarch %{multiarch_bindir}/libpng%{major}-config
 
 %files -n %{staticname}
-%defattr(-,root,root)
 %{_libdir}/libpng.a
 %{_libdir}/libpng%{major}.a
 
 %files source
-%defattr(-,root,root)
 %{_prefix}/src/%{name}/
