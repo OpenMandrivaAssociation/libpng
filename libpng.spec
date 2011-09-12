@@ -1,5 +1,5 @@
 %define major 15
-%define libname	%mklibname png %{major} %{major}
+%define libname	%mklibname png %{major}
 %define develname %mklibname png -d
 %define staticname %mklibname png -d -s
 
