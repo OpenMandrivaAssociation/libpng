@@ -44,9 +44,9 @@ linked with libpng.
 %package -n	%{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
-Requires:	%{libname} = %{epoch}:%{version}
-Provides:	%{name}-devel = %{epoch}:%{version}-%{release}
-Provides:	png-devel = %{epoch}:%{version}-%{release}
+Requires:	%{libname} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
+Provides:	png-devel = %{EVRD}
 Obsoletes:	%{mklibname png 3 -d} < 1.2.30
 Provides:	%mklibname png 3 -d
 
@@ -62,9 +62,9 @@ libpng package.
 %package -n	%{staticname}
 Summary:	Development static libraries
 Group:		Development/C
-Requires:	%{develname} = %{epoch}:%{version}
-Provides:	%{name}-static-devel = %{epoch}:%{version}-%{release}
-Provides:	png-static-devel = %{epoch}:%{version}-%{release}
+Requires:	%{develname} = %{EVRD}
+Provides:	%{name}-static-devel = %{EVRD}
+Provides:	png-static-devel = %{EVRD}
 Obsoletes:	%{mklibname png 3 -d -s} < 1.2.30
 Provides:	%mklibname png 3 -d -s
 
