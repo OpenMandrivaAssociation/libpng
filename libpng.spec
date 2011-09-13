@@ -6,7 +6,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.4
-Release:	2
+Release:	3
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -46,9 +46,8 @@ Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
+Conflicts:	png-devel < 1.5
 Provides:	png-devel = %{EVRD}
-Obsoletes:	%{mklibname png 3 -d} < 1.2.30
-Provides:	%mklibname png 3 -d
 
 %description -n	%{develname}
 The libpng-devel package contains the header files and libraries
@@ -64,9 +63,8 @@ Summary:	Development static libraries
 Group:		Development/C
 Requires:	%{develname} = %{EVRD}
 Provides:	%{name}-static-devel = %{EVRD}
+Conflicts:	png-static-devel < 1.5
 Provides:	png-static-devel = %{EVRD}
-Obsoletes:	%{mklibname png 3 -d -s} < 1.2.30
-Provides:	%mklibname png 3 -d -s
 
 %description -n	%{staticname}
 Libpng development static libraries.
