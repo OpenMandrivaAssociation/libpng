@@ -18,6 +18,7 @@ Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.
 Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-%{version}-apng.patch.gz
 Patch1:		libpng-1.5.4-cmake-fixes.patch
 Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
+Patch3:		libpng-1.5.4-fix-libdir-pkgconfig-lib64-conflict.patch
 BuildRequires: 	zlib-devel
 BuildRequires:	cmake
 
@@ -79,6 +80,7 @@ This package contains the source code of %{name}.
 %patch0 -p1 -b .apng
 %patch1 -p0 -b .fix-symlink
 %patch2 -p0 -b .fix-cmake-files-libpath
+%patch3 -p1 -b .lib64~
 
 %build
 export CFLAGS="%{optflags} -O3 -funroll-loops"
@@ -96,9 +98,6 @@ rm -f %buildroot%_libdir/*.la
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
-#multiarch
-%multiarch_binaries %{buildroot}%{_bindir}/libpng%{major}-config
-
 %files -n %{libname}
 %{_libdir}/libpng%{major}.so.%{major}*
 
@@ -112,7 +111,6 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{_libdir}/libpng/libpng%{major}*.cmake
 %{_libdir}/pkgconfig/libpng*.pc
 %{_mandir}/man?/*
-%multiarch %{multiarch_bindir}/libpng%{major}-config
 
 %files -n %{staticname}
 %{_libdir}/libpng.a
