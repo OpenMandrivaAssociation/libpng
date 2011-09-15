@@ -102,7 +102,7 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{_libdir}/libpng%{major}.so.%{major}*
 
 %files -n %{develname}
-%doc *.txt example.c README TODO CHANGES
+%doc libpng-manual.txt example.c README TODO CHANGES
 %{_bindir}/libpng-config
 %{_bindir}/libpng%{major}-config
 %{_includedir}/*
