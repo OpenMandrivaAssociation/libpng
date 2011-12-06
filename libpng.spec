@@ -1,12 +1,11 @@
 %define major 15
 %define libname	%mklibname png %{major}
 %define develname %mklibname png -d
-%define staticname %mklibname png -d -s
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.6
-Release:	1
+Release:	2
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -44,7 +43,7 @@ linked with libpng.
 %package -n	%{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
-Requires:	%{libname} = %{EVRD}
+Requires:	%{libname} >= %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 Provides:	png-devel = %{EVRD}
 
@@ -56,16 +55,6 @@ Graphics) library.
 If you want to develop programs which will manipulate PNG image format
 files, you should install libpng-devel.  You'll also need to install the
 libpng package.
-
-%package -n	%{staticname}
-Summary:	Development static libraries
-Group:		Development/C
-Requires:	%{develname} = %{EVRD}
-Provides:	%{name}-static-devel = %{EVRD}
-Provides:	png-static-devel = %{EVRD}
-
-%description -n	%{staticname}
-Libpng development static libraries.
 
 %package	source
 Summary:	Source code of %{name}
@@ -84,14 +73,15 @@ This package contains the source code of %{name}.
 export CFLAGS="%{optflags} -O3 -funroll-loops"
 %cmake \
   -DPNG_SHARED:BOOL=ON \
-  -DPNG_STATIC:BOOL=ON
+  -DPNG_STATIC:BOOL=OFF
 %make
 
 %install
+
 %makeinstall_std -C build
 
-# die, die, die
-rm -f %buildroot%_libdir/*.la
+# cleanup
+rm -f %buildroot%_libdir/*.*a
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
@@ -109,10 +99,6 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{_libdir}/libpng/libpng%{major}*.cmake
 %{_libdir}/pkgconfig/libpng*.pc
 %{_mandir}/man?/*
-
-%files -n %{staticname}
-%{_libdir}/libpng.a
-%{_libdir}/libpng%{major}.a
 
 %files source
 %{_prefix}/src/%{name}/
