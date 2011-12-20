@@ -18,7 +18,7 @@ Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{versi
 Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
 Patch3:		libpng-1.5.4-fix-libdir-pkgconfig-lib64-conflict.patch
 BuildRequires: 	zlib-devel
-BuildRequires:	cmake
+BuildRequires:	cmake >= 1:2.8.6-7
 
 %description
 The libpng package contains a library of functions for creating and
@@ -72,12 +72,9 @@ This package contains the source code of %{name}.
 %build
 export CFLAGS="%{optflags} -O3 -funroll-loops"
 
-# Set in Release to not change devel file name, but this needs to be
-# set to Debug and rebuild all packages that needs libpng
 %cmake \
   -DPNG_SHARED:BOOL=ON \
-  -DPNG_STATIC:BOOL=OFF \
-  -DCMAKE_BUILD_TYPE=Release
+  -DPNG_STATIC:BOOL=OFF
 %make
 
 %install
