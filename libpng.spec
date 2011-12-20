@@ -5,7 +5,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.7
-Release:	1
+Release:	2
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -71,13 +71,16 @@ This package contains the source code of %{name}.
 
 %build
 export CFLAGS="%{optflags} -O3 -funroll-loops"
+
+# Set in Release to not change devel file name, but this needs to be
+# set to Debug and rebuild all packages that needs libpng
 %cmake \
   -DPNG_SHARED:BOOL=ON \
-  -DPNG_STATIC:BOOL=OFF
+  -DPNG_STATIC:BOOL=OFF \
+  -DCMAKE_BUILD_TYPE=Release
 %make
 
 %install
-
 %makeinstall_std -C build
 
 # cleanup
