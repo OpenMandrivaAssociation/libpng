@@ -4,8 +4,8 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.5.7
-Release:	2
+Version:	1.5.8
+Release:	1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -14,9 +14,10 @@ Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-%{version}-apng.patch.gz
+#Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-%{version}-apng.patch.gz
+Patch0:		libpng-1.5.8-apng.diff
 Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
-Patch3:		libpng-1.5.4-fix-libdir-pkgconfig-lib64-conflict.patch
+Patch3:		libpng-1.5.8-fix-libdir-pkgconfig-lib64-conflict.diff
 BuildRequires: 	zlib-devel
 BuildRequires:	cmake >= 1:2.8.6-7
 
