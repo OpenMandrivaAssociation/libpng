@@ -74,6 +74,7 @@ This package contains a static library for development using %{name}.
 %package	source
 Summary:	Source code of %{name}
 Group:		Development/C
+BuildArch:	noarch
 
 %description	source
 This package contains the source code of %{name}.
