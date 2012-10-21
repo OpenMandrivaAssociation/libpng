@@ -3,6 +3,8 @@
 %define develname %mklibname png -d
 %define	static	%mklibname -d -s png
 
+%bcond_without	uclibc
+
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.13
@@ -82,6 +84,20 @@ This package contains the source code of %{name}.
 %patch3 -p1 -b .lib64~
 
 %build
+%if %{with uclibc}
+export CONFIGURE_TOP=$PWD
+mkdir -p uclibc
+pushd uclibc
+# building out of source by default with cmake is causing troubles if one
+# wanna do several builds using the cmake macro, this needs to be fixed in
+# cmake package, but we'll just do it the old autofoo way in stay for now..
+%configure2_5x	CC="%{uclibc_cc}" \
+		CFLAGS="%{uclibc_cflags}" \
+		--disable-shared
+%make
+popd
+%endif
+
 %cmake	-DPNG_SHARED:BOOL=ON \
 	-DPNG_STATIC:BOOL=ON \
 	-DCMAKE_C_FLAGS_RELWITHDEBINFO="%{optflags} -Ofast -funroll-loops" \
@@ -90,6 +106,11 @@ This package contains the source code of %{name}.
 
 %install
 %makeinstall_std -C build
+
+%if %{with uclibc}
+install -m644 uclibc/.libs/libpng15.a -D %{buildroot}%{uclibc_root}%{_libdir}/libpng15.a
+ln -s libpng15.a %{buildroot}%{uclibc_root}%{_libdir}/libpng.a
+%endif
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
@@ -109,7 +130,12 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{_mandir}/man?/*
 
 %files -n %{static}
+%{_libdir}/libpng.a
 %{_libdir}/libpng15.a
+%if %{with uclibc}
+%{uclibc_root}%{_libdir}/libpng.a
+%{uclibc_root}%{_libdir}/libpng15.a
+%endif
 
 %files source
 %{_prefix}/src/%{name}/
