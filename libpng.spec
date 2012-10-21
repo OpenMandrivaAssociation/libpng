@@ -66,6 +66,7 @@ libpng package.
 Summary:	Static development library of %{name}
 Group:		Development/C
 Requires:	%{develname} = %{EVRD}
+Provides:	png-static-devel
 
 %description -n	%{static}
 This package contains a static library for development using %{name}.
