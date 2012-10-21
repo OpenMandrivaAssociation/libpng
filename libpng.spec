@@ -19,7 +19,7 @@ Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-1.5.13-apng.patch.gz
 Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
-Patch3:		libpng-1.5.8-fix-libdir-pkgconfig-lib64-conflict.diff
+Patch3:		libpng-1.5.13-fix-libdir-pkgconfig-lib64-conflict.diff
 BuildRequires: 	zlib-devel
 BuildRequires:	cmake >= 1:2.8.6-7
 %if %{with uclibc}
