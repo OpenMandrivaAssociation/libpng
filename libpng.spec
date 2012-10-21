@@ -5,7 +5,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.13
-Release:	1
+Release:	2
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -19,6 +19,9 @@ Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
 Patch3:		libpng-1.5.8-fix-libdir-pkgconfig-lib64-conflict.diff
 BuildRequires: 	zlib-devel
 BuildRequires:	cmake >= 1:2.8.6-7
+%if %{with uclibc}
+BuildRequires:	uClibc-devel
+%endif
 
 %description
 The libpng package contains a library of functions for creating and
@@ -70,18 +73,14 @@ This package contains the source code of %{name}.
 %patch3 -p1 -b .lib64~
 
 %build
-export CFLAGS="%{optflags} -O3 -funroll-loops"
-
-%cmake \
-  -DPNG_SHARED:BOOL=ON \
-  -DPNG_STATIC:BOOL=OFF
+%cmake	-DPNG_SHARED:BOOL=ON \
+	-DPNG_STATIC:BOOL=OFF \
+	-DCMAKE_C_FLAGS_RELWITHDEBINFO="%{optflags} -Ofast -funroll-loops" \
+	-DCMAKE_EXE_LINKER_FLAGS="%{ldflags}"
 %make
 
 %install
 %makeinstall_std -C build
-
-# cleanup
-rm -f %buildroot%_libdir/*.*a
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
