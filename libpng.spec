@@ -46,10 +46,21 @@ Group:		System/Libraries
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
+%package -n	uclibc-%{libname}
+Summary:	A library of functions for manipulating PNG image format files
+Group:		System/Libraries
+
+%description -n	uclibc-%{libname}
+This package contains the library needed to run programs dynamically
+linked with libpng.
+
 %package -n	%{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
+%if %{with uclibc}
+Requires:	uclibc-%{libname} >= %{EVRD}
+%endif
 Provides:	%{name}-devel = %{EVRD}
 Provides:	png-devel = %{EVRD}
 
@@ -93,9 +104,7 @@ pushd uclibc
 # building out of source by default with cmake is causing troubles if one
 # wanna do several builds using the cmake macro, this needs to be fixed in
 # cmake package, but we'll just do it the old autofoo way in stay for now..
-%configure2_5x	CC="%{uclibc_cc}" \
-		CFLAGS="%{uclibc_cflags}" \
-		--disable-shared
+%uclibc_configure
 %make
 popd
 %endif
@@ -107,18 +116,24 @@ popd
 %make
 
 %install
-%makeinstall_std -C build
-
 %if %{with uclibc}
-install -m644 uclibc/.libs/libpng15.a -D %{buildroot}%{uclibc_root}%{_libdir}/libpng15.a
-ln -s libpng15.a %{buildroot}%{uclibc_root}%{_libdir}/libpng.a
+%makeinstall_std -C uclibc
+rm -r %{buildroot}%{uclibc_root}%{_libdir}/pkgconfig
+rm -r %{buildroot}%{uclibc_root}%{_bindir}
 %endif
+
+%makeinstall_std -C build
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
 %files -n %{libname}
 %{_libdir}/libpng%{major}.so.%{major}*
+
+%if %{with uclibc}
+%files -n uclibc-%{libname}
+%{uclibc_root}%{_libdir}/libpng%{major}.so.%{major}*
+%endif
 
 %files -n %{develname}
 %doc libpng-manual.txt example.c README TODO CHANGES
@@ -127,6 +142,10 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{_includedir}/*
 %{_libdir}/libpng%{major}.so
 %{_libdir}/libpng.so
+%if %{with uclibc}
+%{uclibc_root}%{_libdir}/libpng%{major}.so
+%{uclibc_root}%{_libdir}/libpng.so
+%endif
 %{_libdir}/libpng/libpng%{major}*.cmake
 %{_libdir}/pkgconfig/libpng*.pc
 %{_mandir}/man?/*
