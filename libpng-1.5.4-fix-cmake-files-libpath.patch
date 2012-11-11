@@ -1,0 +1,14 @@
+# AUTHOR:	Zé <ze@mandriva.org>
+# SUBJECT:	fix .cmake lib path
+
+--- CMakeLists.txt.fix-cmake-files-libpath	2011-09-11 12:59:53.020223363 +0100
++++ CMakeLists.txt	2011-09-11 13:00:26.996222359 +0100
+@@ -359,7 +359,7 @@ endif()
+ # On versions of CMake that support it, create an export file CMake
+ # users can include() to import our targets
+ if(PNG_EXPORT_RULE AND NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL )
+-  install(EXPORT libpng DESTINATION lib/libpng FILE lib${PNG_LIB_NAME}.cmake)
++  install(EXPORT libpng DESTINATION ${CMAKE_INSTALL_LIBDIR}/libpng FILE lib${PNG_LIB_NAME}.cmake)
+ endif()
+ 
+ # what's with libpng-$VER%.txt and all the extra files?
