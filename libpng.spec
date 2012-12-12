@@ -8,7 +8,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.13
-Release:	2
+Release:	1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -160,3 +160,158 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
 %files source
 %{_prefix}/src/%{name}/
+
+%changelog
+* Wed Dec 12 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 1.5.13-1
+- make source package noarch
+- update pkgconfig patch
+- add back uclibc build
+- add back static build of library
+- libpng cmake file ignores standard variables for setting cflags & ldflags, so
+  pass these with the variables it uses
+
+  + Tomasz Pawel Gajc <tpg@mandriva.org>
+    - update to new version 1.5.13
+
+* Fri Jul 13 2012 Oden Eriksson <oeriksson@mandriva.com>1.5.12-1
++ Revision: 809163
+- 1.5.12
+
+* Sat Jun 16 2012 Oden Eriksson <oeriksson@mandriva.com>1.5.11-1
++ Revision: 805997
+- rediff
+- 1.5.11
+
+* Fri Mar 30 2012 Oden Eriksson <oeriksson@mandriva.com>1.5.10-1
++ Revision: 788398
+- new apng patch
+- fix one patch
+- 1.5.10
+
+* Sun Feb 19 2012 Oden Eriksson <oeriksson@mandriva.com>1.5.9-1
++ Revision: 777386
+- 1.5.9
+
+* Sat Feb 04 2012 Oden Eriksson <oeriksson@mandriva.com>1.5.8-1
++ Revision: 771164
+- 1.5.8 (fixes CVE-2011-3464)
+- rediffed some patches
+
+  + Per Øyvind Karlsen <peroyvind@mandriva.org>
+    - add a versioned build dependency on latest cmake and stop messing with
+      CMAKE_BUILD_TYPE
+
+* Tue Dec 20 2011 Z? <ze@mandriva.org>1.5.7-2
++ Revision: 743865
+- set to Release mode to not change devel lib file, but needs to be set to Debug mode and rebuild all packages that need libpng, this is the proper way
+
+* Sun Dec 18 2011 Oden Eriksson <oeriksson@mandriva.com>1.5.7-1
++ Revision: 743553
+- 1.5.7
+
+* Tue Dec 06 2011 Oden Eriksson <oeriksson@mandriva.com>1.5.6-2
++ Revision: 738311
+- drop the static lib and its sub package
+
+* Thu Nov 03 2011 Oden Eriksson <oeriksson@mandriva.com>1.5.6-1
++ Revision: 716269
+- 1.5.6
+
+* Wed Sep 28 2011 Oden Eriksson <oeriksson@mandriva.com>1.5.5-1
++ Revision: 701799
+- 1.5.5
+
+* Fri Sep 16 2011 Per Øyvind Karlsen <peroyvind@mandriva.org>1.5.4-6
++ Revision: 699938
+- really fix file conflict..
+- be more strict about what .txt files we include, so we don't ship with
+  CMakeLists.txt as doc
+
+* Thu Sep 15 2011 Per Øyvind Karlsen <peroyvind@mandriva.org>1.5.4-5
++ Revision: 699913
+- fix pkgconfig lib64 conflict, avoiding %%multiarch hackage (P3)
+- remove conflicts on older libpng devel packages
+
+* Tue Sep 13 2011 Per Øyvind Karlsen <peroyvind@mandriva.org>1.5.4-4
++ Revision: 699666
+- fix missing epoch in conflicts
+
+* Tue Sep 13 2011 Per Øyvind Karlsen <peroyvind@mandriva.org>1.5.4-3
++ Revision: 699604
+- fix so that -devel package can co-exist in repos with older version
+- use %%{EVRD} macro
+
+* Mon Sep 12 2011 Per Øyvind Karlsen <peroyvind@mandriva.org>1.5.4-2
++ Revision: 699438
+- be sure to correct upgrade from incorrect package name due to duped major
+- do some cleaning
+- fix duplicate major in package name
+- drop dangerous and incorrect obsoletes on older library package
+
+* Sun Sep 11 2011 Z? <ze@mandriva.org>1.5.4-1
++ Revision: 699416
+- version 1.5.4
+- drop useless requires (already exist,no need to have them explict)
+- drop useless provides
+- set requires to version
+- fix symlink
+- fix .cmake files path
+- fix source and patch URLs
+
+* Thu Jul 21 2011 Oden Eriksson <oeriksson@mandriva.com>1.2.46-1
++ Revision: 690817
+- 1.2.46
+
+* Fri Apr 29 2011 Funda Wang <fwang@mandriva.org>1.2.44-3
++ Revision: 660654
+- update multiarch usage
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - mass rebuild
+
+* Sat Aug 14 2010 Oden Eriksson <oeriksson@mandriva.com>1.2.44-2mdv2011.0
++ Revision: 569562
+- sync with MDVSA-2010:133
+
+* Fri Jul 09 2010 Funda Wang <fwang@mandriva.org>1.2.44-1mdv2011.0
++ Revision: 549888
+- New version 1.2.44
+
+  + Oden Eriksson <oeriksson@mandriva.com>
+    - remove the changelog (how did that happen?)
+
+* Thu Feb 25 2010 Oden Eriksson <oeriksson@mandriva.com>1.2.43-1mdv2010.1
++ Revision: 511259
+- use a newer apng patch from upstream
+- 1.2.43
+
+* Wed Feb 24 2010 Oden Eriksson <oeriksson@mandriva.com>1.2.42-1mdv2010.1
++ Revision: 510653
+- 1.2.42
+- rediffed the apng patch
+
+  + Per Øyvind Karlsen <peroyvind@mandriva.org>
+    - make uclibc file in %%files conditional (thx to Matthew Dawkins for noticing!)
+
+* Sat Dec 05 2009 Per Øyvind Karlsen <peroyvind@mandriva.org>1.2.41-2mdv2010.1
++ Revision: 473715
+- build with -fPIC
+
+* Sat Dec 05 2009 Funda Wang <fwang@mandriva.org>1.2.41-1mdv2010.1
++ Revision: 473664
+- new version 1.2.41
+
+  + Per Øyvind Karlsen <peroyvind@mandriva.org>
+    - compile with '-O3 -funroll-loops' (as suggested by upstream)
+    - don't pass -DPNG_NO_MMX_CODE, it's already handled automatically by configure
+    - build static uclibc linked library
+
+* Sun Sep 13 2009 Tomasz Pawel Gajc <tpg@mandriva.org>1.2.40-1mdv2010.0
++ Revision: 439029
+- update to new version 1.2.40
+
+* Sun Aug 30 2009 Tomasz Pawel Gajc <tpg@mandriva.org>1.2.39-1mdv2010.0
++ Revision: 422506
+- update to new version 1.2.39
+- update patch0
+
