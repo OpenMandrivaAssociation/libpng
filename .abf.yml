@@ -1,2 +1,4 @@
+---
 sources:
-  libpng-1.5.13.tar.xz: a6c0fc33b2031e4a9154da03c7d4e7807bc039e7
+  libpng-1.5.14-apng.patch.gz: 887ad5d17e8f7504835f6d052cdc028913b063c6
+  libpng-1.5.14.tar.xz: e8a41ffbf62b455e48dc2a50f59071395f95cb4b

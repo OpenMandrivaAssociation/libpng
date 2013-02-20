@@ -7,8 +7,8 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.5.13
-Release:	2
+Version:	1.5.14
+Release:	1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -17,10 +17,10 @@ Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-1.5.13-apng.patch.gz
+Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-1.5.14-apng.patch.gz
 Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
 Patch3:		libpng-1.5.13-fix-libdir-pkgconfig-lib64-conflict.diff
-BuildRequires: 	zlib-devel
+BuildRequires:	zlib-devel
 BuildRequires:	cmake >= 1:2.8.6-7
 %if %{with uclibc}
 BuildRequires:	uClibc-devel
@@ -36,7 +36,7 @@ algorithm.
 Libpng should be installed if you need to manipulate PNG format image
 files.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
 %define	ouchie	%mklibname png %{major} %{major}
@@ -46,15 +46,17 @@ Group:		System/Libraries
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
-%package -n	uclibc-%{libname}
+%if %{with uclibc}
+%package -n uclibc-%{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
 
 %description -n	uclibc-%{libname}
 This package contains the library needed to run programs dynamically
 linked with libpng.
+%endif
 
-%package -n	%{develname}
+%package -n %{develname}
 Summary:	Development tools for programs to manipulate PNG image format files
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
@@ -73,7 +75,7 @@ If you want to develop programs which will manipulate PNG image format
 files, you should install libpng-devel.  You'll also need to install the
 libpng package.
 
-%package -n	%{static}
+%package -n %{static}
 Summary:	Static development library of %{name}
 Group:		Development/C
 Requires:	%{develname} = %{EVRD}
@@ -82,12 +84,12 @@ Provides:	png-static-devel
 %description -n	%{static}
 This package contains a static library for development using %{name}.
 
-%package	source
+%package source
 Summary:	Source code of %{name}
 Group:		Development/C
 BuildArch:	noarch
 
-%description	source
+%description source
 This package contains the source code of %{name}.
 
 %prep
