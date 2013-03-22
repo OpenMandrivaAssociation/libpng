@@ -20,6 +20,7 @@ Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.
 Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-1.5.14-apng.patch.gz
 Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
 Patch3:		libpng-1.5.13-fix-libdir-pkgconfig-lib64-conflict.diff
+Patch4:		libpng-fpic-cmake.patch
 BuildRequires:	zlib-devel
 BuildRequires:	cmake >= 1:2.8.6-7
 %if %{with uclibc}
@@ -97,6 +98,7 @@ This package contains the source code of %{name}.
 %patch0 -p1 -b .apng
 %patch2 -p0 -b .fix-cmake-files-libpath
 %patch3 -p1 -b .lib64~
+%patch4 -p1 -b .fpic
 
 %build
 %if %{with uclibc}
@@ -110,7 +112,7 @@ pushd uclibc
 %make
 popd
 %endif
-
+which gcc
 %cmake	-DPNG_SHARED:BOOL=ON \
 	-DPNG_STATIC:BOOL=ON \
 	-DCMAKE_C_FLAGS_RELWITHDEBINFO="%{optflags} -Ofast -funroll-loops" \
