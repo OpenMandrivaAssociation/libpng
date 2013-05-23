@@ -117,10 +117,6 @@ popd
 # doesn't set symbol versions which are required by LSB
 %configure2_5x
 %make
-# %cmake -DPNG_SHARED:BOOL=ON \
-#       -DPNG_STATIC:BOOL=ON \
-#       -DCMAKE_C_FLAGS_RELWITHDEBINFO="%{optflags} -Ofast -funroll-loops" \
-#       -DCMAKE_EXE_LINKER_FLAGS="%{ldflags}"
 
 
 %install
