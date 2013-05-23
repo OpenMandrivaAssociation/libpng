@@ -3,12 +3,12 @@
 %define develname %mklibname png -d
 %define	static	%mklibname -d -s png
 
-%bcond_without	uclibc
+%bcond_with	uclibc
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.5.14
-Release:	1
+Release:	2
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
@@ -18,11 +18,11 @@ Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-1.5.14-apng.patch.gz
-Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
+#Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
 Patch3:		libpng-1.5.13-fix-libdir-pkgconfig-lib64-conflict.diff
-Patch4:		libpng-fpic-cmake.patch
+#Patch4:		libpng-fpic-cmake.patch
 BuildRequires:	zlib-devel
-BuildRequires:	cmake >= 1:2.8.6-7
+#BuildRequires:	cmake >= 1:2.8.6-7
 %if %{with uclibc}
 BuildRequires:	uClibc-devel
 %endif
@@ -96,9 +96,9 @@ This package contains the source code of %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .apng
-%patch2 -p0 -b .fix-cmake-files-libpath
+#%patch2 -p0 -b .fix-cmake-files-libpath
 %patch3 -p1 -b .lib64~
-%patch4 -p1 -b .fpic
+#%patch4 -p1 -b .fpic
 
 %build
 %if %{with uclibc}
@@ -112,12 +112,16 @@ pushd uclibc
 %make
 popd
 %endif
-which gcc
-%cmake	-DPNG_SHARED:BOOL=ON \
-	-DPNG_STATIC:BOOL=ON \
-	-DCMAKE_C_FLAGS_RELWITHDEBINFO="%{optflags} -Ofast -funroll-loops" \
-	-DCMAKE_EXE_LINKER_FLAGS="%{ldflags}"
+
+# Do not use cmake, it is in bad shape in libpng -
+# doesn't set symbol versions which are required by LSB
+%configure2_5x
 %make
+# %cmake -DPNG_SHARED:BOOL=ON \
+#       -DPNG_STATIC:BOOL=ON \
+#       -DCMAKE_C_FLAGS_RELWITHDEBINFO="%{optflags} -Ofast -funroll-loops" \
+#       -DCMAKE_EXE_LINKER_FLAGS="%{ldflags}"
+
 
 %install
 %if %{with uclibc}
@@ -126,7 +130,8 @@ rm -r %{buildroot}%{uclibc_root}%{_libdir}/pkgconfig
 rm -r %{buildroot}%{uclibc_root}%{_bindir}
 %endif
 
-%makeinstall_std -C build
+%makeinstall_std 
+#-C build
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
@@ -150,7 +155,7 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{uclibc_root}%{_libdir}/libpng%{major}.so
 %{uclibc_root}%{_libdir}/libpng.so
 %endif
-%{_libdir}/libpng/libpng%{major}*.cmake
+#%{_libdir}/libpng/libpng%{major}*.cmake
 %{_libdir}/pkgconfig/libpng*.pc
 %{_mandir}/man?/*
 
