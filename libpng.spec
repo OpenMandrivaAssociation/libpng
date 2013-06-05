@@ -7,20 +7,18 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.5.14
-Release:	2
+Version:	1.5.16
+Release:	1
 Epoch:		2
 License:	zlib
 Group:		System/Libraries
 URL:		http://www.libpng.org/pub/png/libpng.html
-Source0:	http://prdownloads.sourceforge.net/libpng/files/%{name}-%{version}.tar.xz
+Source0:	http://tenet.dl.sourceforge.net/project/libpng/libpng15/%version/libpng-%version.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		http://downloads.sourceforge.net/libpng-apng/files/libpng-devel/%{version}/%{name}-1.5.14-apng.patch.gz
-#Patch2:		libpng-1.5.4-fix-cmake-files-libpath.patch
-Patch3:		libpng-1.5.13-fix-libdir-pkgconfig-lib64-conflict.diff
-#Patch4:		libpng-fpic-cmake.patch
+Patch0:		http://tenet.dl.sourceforge.net/project/libpng-apng/libpng15/%version/libpng-%version-apng.patch.gz
+Patch3:		libpng-1.5.16-fix-libdir-pkgconfig-lib64-conflict.diff
 BuildRequires:	zlib-devel
 #BuildRequires:	cmake >= 1:2.8.6-7
 %if %{with uclibc}
@@ -96,9 +94,7 @@ This package contains the source code of %{name}.
 %prep
 %setup -q
 %patch0 -p1 -b .apng
-#%patch2 -p0 -b .fix-cmake-files-libpath
 %patch3 -p1 -b .lib64~
-#%patch4 -p1 -b .fpic
 
 %build
 %if %{with uclibc}
