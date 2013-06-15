@@ -1,5 +1,5 @@
-%define api	15
-%define major	15
+%define api	16
+%define major	16
 %define libname	%mklibname png %{api} %{major}
 %define devname %mklibname png -d
 %define	static	%mklibname -d -s png
@@ -9,17 +9,17 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.5.16
-Release:	2
+Version:	1.6.2
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
-Source0:	http://tenet.dl.sourceforge.net/project/libpng/libpng15/%{version}/%{name}-%{version}.tar.xz
+Source0:	http://garr.dl.sourceforge.net/project/libpng/libpng%{api}/%{version}/%{name}-%{version}.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		http://tenet.dl.sourceforge.net/project/libpng-apng/libpng15/%{version}/libpng-%{version}-apng.patch.gz
-Patch3:		libpng-1.5.16-fix-libdir-pkgconfig-lib64-conflict.diff
+Patch0:		http://garr.dl.sourceforge.net/project/libpng-apng/libpng%{api}/%{version}/libpng-%{version}-apng.patch.gz
+Patch3:		libpng-1.6.2-fix-libdir-pkgconfig-lib64-conflict.diff
 
 #BuildRequires:	cmake >= 1:2.8.6-7
 BuildRequires:	pkgconfig(zlib)
@@ -40,11 +40,6 @@ files.
 %package -n %{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
-# it not a double major, it's an api and a major
-# same thing happened with libpng12.so.0 or aka libpng0
-# if we don't properly name the lib pkgs, we will
-# eventually run into upgrade problems
-Obsoletes:	%{_lib}png15 < 2:1.5.16-2
 
 %description -n	%{libname}
 This package contains the library needed to run programs dynamically
@@ -54,7 +49,6 @@ linked with libpng.
 %package -n uclibc-%{libname}
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
-Obsoletes:	uclibc-%{_lib}png15 < 2:1.5.16-2
 
 %description -n	uclibc-%{libname}
 This package contains the library needed to run programs dynamically
@@ -153,10 +147,10 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
 %files -n %{static}
 %{_libdir}/libpng.a
-%{_libdir}/libpng15.a
+%{_libdir}/libpng%{api}.a
 %if %{with uclibc}
 %{uclibc_root}%{_libdir}/libpng.a
-%{uclibc_root}%{_libdir}/libpng15.a
+%{uclibc_root}%{_libdir}/libpng%{api}.a
 %endif
 
 %files source
