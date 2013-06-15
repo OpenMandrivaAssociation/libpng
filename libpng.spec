@@ -10,7 +10,7 @@ Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
 Version:	1.6.2
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -64,6 +64,12 @@ Requires:	uclibc-%{libname} >= %{EVRD}
 %endif
 Provides:	%{name}-devel = %{EVRD}
 Provides:	png-devel = %{EVRD}
+# FIXME this is not quite right, but will fix a great many builds...
+%if "%_lib" == "lib64"
+Provides:	devel(libpng15(64bit))
+%else
+Provides:	devel(libpng15)
+%endif
 
 %description -n	%{devname}
 The libpng-devel package contains the header files and libraries
