@@ -112,7 +112,8 @@ popd
 
 # Do not use cmake, it is in bad shape in libpng -
 # doesn't set symbol versions which are required by LSB
-%configure2_5x
+%configure2_5x \
+		--enable-static
 %make
 
 %install
