@@ -9,8 +9,8 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.6.2
-Release:	6
+Version:	1.6.8
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -93,6 +93,13 @@ BuildArch:	noarch
 %description source
 This package contains the source code of %{name}.
 
+%package tools
+Summary:	Tools for working with/fixing up PNG files
+Group:		Development/Other
+
+%description tools
+Tools for working with/fixing up PNG files
+
 %prep
 %setup -q
 %apply_patches
@@ -159,6 +166,9 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %{uclibc_root}%{_libdir}/libpng%{api}.a
 %endif
 
+%files tools
+%{_bindir}/pngfix
+%{_bindir}/png-fix-itxt
+
 %files source
 %{_prefix}/src/%{name}/
-
