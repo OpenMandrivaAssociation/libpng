@@ -1,3 +1,5 @@
-sources:
-  libpng-1.6.8-apng.patch.gz: fd242542cc7ae10e69eeea50c747b8f9f2af01de
+removed_sources:
   libpng-1.6.8.tar.xz: acdb0a45d80c90b39b56a41075003d4726f3558c
+sources:
+  libpng-1.6.11.tar.xz: 4d832e419bd4aaa2bb416a7421b2d0279d0dc1d9
+  libpng-1.6.11-apng.patch.gz: 611e2ca8d67a0d0b5c63f4c156c5bf63d6cf792f
