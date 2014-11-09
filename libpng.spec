@@ -21,8 +21,8 @@ Source0:	http://garr.dl.sourceforge.net/project/libpng/libpng%{api}/%{version}/%
 Patch0:		http://garr.dl.sourceforge.net/project/libpng-apng/libpng%{api}/%{version}/libpng-%{version}-apng.patch.gz
 Patch3:		libpng-1.6.2-fix-libdir-pkgconfig-lib64-conflict.diff
 
-#BuildRequires:	cmake >= 1:2.8.6-7
-#BuildRequires:	pkgconfig(zlib)
+BuildRequires:	cmake >= 1:2.8.6-7
+BuildRequires:	pkgconfig(zlib)
 %if %{with uclibc}
 BuildRequires:	uClibc-devel
 %endif
