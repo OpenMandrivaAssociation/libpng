@@ -1,16 +1,16 @@
-%define api	16
-%define major	16
-%define libname	%mklibname png %{api} %{major}
+%define api 16
+%define major 16
+%define libname %mklibname png %{api} %{major}
 %define devname %mklibname png -d
-%define	static	%mklibname -d -s png
+%define static %mklibname -d -s png
 
 %bcond_with	uclibc
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.6.11
-Release:	3
+Version:	1.6.14
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -119,7 +119,7 @@ popd
 
 # Do not use cmake, it is in bad shape in libpng -
 # doesn't set symbol versions which are required by LSB
-%configure2_5x --enable-static
+%configure --enable-static
 %make
 
 %install
@@ -129,7 +129,7 @@ rm -r %{buildroot}%{uclibc_root}%{_libdir}/pkgconfig
 rm -r %{buildroot}%{uclibc_root}%{_bindir}
 %endif
 
-%makeinstall_std 
+%makeinstall_std
 #-C build
 
 install -d %{buildroot}%{_prefix}/src/%{name}
