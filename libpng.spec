@@ -19,7 +19,7 @@ Source0:	http://garr.dl.sourceforge.net/project/libpng/libpng%{api}/%{version}/%
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		http://garr.dl.sourceforge.net/project/libpng-apng/libpng%{api}/%{version}/libpng-%{version}-apng.patch.gz
-Patch3:		libpng-1.6.2-fix-libdir-pkgconfig-lib64-conflict.diff
+Patch1:		libpng-1.6.2-fix-libdir-pkgconfig-lib64-conflict.patch
 
 BuildRequires:	cmake >= 1:2.8.6-7
 BuildRequires:	pkgconfig(zlib)
@@ -102,7 +102,7 @@ Tools for working with/fixing up PNG files
 
 %prep
 %setup -q
-#% apply_patches
+%apply_patches
 
 %build
 %if %{with uclibc}
