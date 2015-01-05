@@ -10,7 +10,7 @@ Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
 Version:	1.6.8
-Release:	3
+Release:	4
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -21,6 +21,7 @@ Source0:	http://garr.dl.sourceforge.net/project/libpng/libpng%{api}/%{version}/%
 Patch0:		http://garr.dl.sourceforge.net/project/libpng-apng/libpng%{api}/%{version}/libpng-%{version}-apng.patch.gz
 Patch3:		libpng-1.6.2-fix-libdir-pkgconfig-lib64-conflict.diff
 Patch4:		patch-libpng-1.6.0-1.6.9-vu684412.diff
+Patch5:		patch-libpng-1.6.0-1.6.14-ver_overflow.patch
 
 #BuildRequires:	cmake >= 1:2.8.6-7
 BuildRequires:	pkgconfig(zlib)
