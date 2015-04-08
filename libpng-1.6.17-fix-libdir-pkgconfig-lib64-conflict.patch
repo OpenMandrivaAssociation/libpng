@@ -1,7 +1,6 @@
-diff --git a/libpng-config.in b/libpng-config.in
-index 69bf8e3..2f1e532 100644
---- a/libpng-config.in
-+++ b/libpng-config.in
+diff -Naur libpng-1.6.17/libpng-config.in libpng-1.6.17.tpg/libpng-config.in
+--- libpng-1.6.17/libpng-config.in	2015-03-26 13:06:23.000000000 +0000
++++ libpng-1.6.17.tpg/libpng-config.in	2015-04-08 18:12:11.560274002 +0000
 @@ -14,12 +14,12 @@
  version="@PNGLIB_VERSION@"
  prefix="@prefix@"
@@ -17,10 +16,9 @@ index 69bf8e3..2f1e532 100644
  R_opts=""
  cppflags=""
  ccopts=""
-diff --git a/libpng.pc.in b/libpng.pc.in
-index 3e7e2c5..01aee42 100644
---- a/libpng.pc.in
-+++ b/libpng.pc.in
+diff -Naur libpng-1.6.17/libpng.pc.in libpng-1.6.17.tpg/libpng.pc.in
+--- libpng-1.6.17/libpng.pc.in	2015-03-26 13:06:23.000000000 +0000
++++ libpng-1.6.17.tpg/libpng.pc.in	2015-04-08 18:12:51.894356455 +0000
 @@ -1,11 +1,11 @@
  prefix=@prefix@
  exec_prefix=@exec_prefix@
@@ -35,10 +33,9 @@ index 3e7e2c5..01aee42 100644
 +Libs: -lpng@PNGLIB_MAJOR@@PNGLIB_MINOR@
  Libs.private: @LIBS@
  Cflags: -I${includedir}
-diff --git a/scripts/libpng.pc.in b/scripts/libpng.pc.in
-index e6399c5..c1bd152 100644
---- a/scripts/libpng.pc.in
-+++ b/scripts/libpng.pc.in
+diff -Naur libpng-1.6.17/scripts/libpng.pc.in libpng-1.6.17.tpg/scripts/libpng.pc.in
+--- libpng-1.6.17/scripts/libpng.pc.in	2015-03-26 13:06:24.000000000 +0000
++++ libpng-1.6.17.tpg/scripts/libpng.pc.in	2015-04-08 18:13:25.309253393 +0000
 @@ -1,10 +1,10 @@
  prefix=@prefix@
  exec_prefix=@exec_prefix@
@@ -48,7 +45,7 @@ index e6399c5..c1bd152 100644
  
  Name: libpng
  Description: Loads and saves PNG files
- Version: 1.6.16
+ Version: 1.6.17
 -Libs: -L${libdir} -lpng16
 +Libs: -lpng16
  Cflags: -I${includedir}
