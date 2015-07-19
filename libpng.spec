@@ -10,7 +10,7 @@ Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
 Version:	1.6.17
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
