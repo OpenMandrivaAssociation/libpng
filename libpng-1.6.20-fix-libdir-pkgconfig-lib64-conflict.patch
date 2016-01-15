@@ -45,7 +45,7 @@ diff -Naur libpng-1.6.17/scripts/libpng.pc.in libpng-1.6.17.tpg/scripts/libpng.p
  
  Name: libpng
  Description: Loads and saves PNG files
- Version: 1.6.17
+ Version: 1.6.20
 -Libs: -L${libdir} -lpng16
 +Libs: -lpng16
  Cflags: -I${includedir}
