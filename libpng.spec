@@ -9,16 +9,16 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.6.20
+Version:	1.6.22
 Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
-Source0:	http://garr.dl.sourceforge.net/project/libpng/libpng%{api}/%{version}/%{name}-%{version}.tar.xz
+Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		http://garr.dl.sourceforge.net/project/libpng-apng/libpng%{api}/%{version}/libpng-%{version}-apng.patch.gz
+Patch0:		http://download.sourceforge.net/%{name}-apng/libpng-%{version}-apng.patch.gz
 Patch1:		libpng-1.6.20-fix-libdir-pkgconfig-lib64-conflict.patch
 
 BuildRequires:	cmake >= 1:2.8.6-7
