@@ -17,7 +17,6 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		https://sourceforge.net/projects/apng/files/libpng/libpng16/libpng-%{version}-apng.patch.gz
-BuildRequires:	cmake >= 1:2.8.6-7
 BuildRequires:	pkgconfig(zlib)
 
 %description
@@ -82,7 +81,7 @@ Tools for working with/fixing up PNG files
 
 %prep
 %setup -q
-%apply_patches
+%patch0 -p0
 
 %build
 # Do not use cmake, it is in bad shape in libpng -
