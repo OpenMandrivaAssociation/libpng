@@ -1,3 +1,3 @@
 sources:
-  libpng-1.6.25.tar.xz: fb471b7732d886b5adf10b4d689a90c88f005aa5
-  libpng-1.6.25-apng.patch.gz: d47c17852c68611423d63db9877766a98437e699
+  libpng-1.6.26.tar.xz: 7a50569b26d57db9810409a59f1b87f8a8e387a3
+  libpng-1.6.26-apng.patch.gz: 21f5697847ea4c524a026caa0b1ac146fa90c9f1
