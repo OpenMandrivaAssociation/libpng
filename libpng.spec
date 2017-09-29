@@ -81,7 +81,7 @@ Tools for working with/fixing up PNG files
 
 %prep
 %setup -q
-%patch0 -p0
+%patch0 -p1
 
 %build
 # Do not use cmake, it is in bad shape in libpng -
