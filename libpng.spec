@@ -7,7 +7,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.6.31
+Version:	1.6.33
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -81,7 +81,7 @@ Tools for working with/fixing up PNG files
 
 %prep
 %setup -q
-%patch0 -p0
+%patch0 -p1
 
 %build
 # Do not use cmake, it is in bad shape in libpng -
