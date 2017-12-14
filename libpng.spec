@@ -7,7 +7,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.6.33
+Version:	1.6.34
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -84,6 +84,7 @@ Tools for working with/fixing up PNG files
 %patch0 -p1
 
 %build
+%global optflags %{optflags} -O3 -funroll-loops -DPIC -fPIC
 # Do not use cmake, it is in bad shape in libpng -
 # doesn't set symbol versions which are required by LSB
 %configure --enable-static
