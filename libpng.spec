@@ -81,7 +81,7 @@ Tools for working with/fixing up PNG files
 
 %prep
 %setup -q
-%patch0 -p1
+%patch0 -p0
 
 %build
 %global optflags %{optflags} -O3 -funroll-loops -DPIC -fPIC
