@@ -7,8 +7,8 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
-Version:	1.6.35
-Release:	2
+Version:	1.6.36
+Release:	1
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -88,16 +88,16 @@ Tools for working with/fixing up PNG files
 # Do not use cmake, it is in bad shape in libpng -
 # doesn't set symbol versions which are required by LSB
 %configure \
-%ifarch x86_64 znver1
+%ifarch %{x86_64}
   --enable-intel-sse \
   --enable-hardware-optimizations \
 %endif
   --enable-static
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
