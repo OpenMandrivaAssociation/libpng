@@ -4,11 +4,13 @@
 %define devname %mklibname png -d
 %define static %mklibname -d -s png
 
+%global optflags %{optflags} -O3
+
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Epoch:		2
 Version:	1.6.36
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -50,7 +52,7 @@ Provides:	devel(libpng15(64bit))
 Provides:	devel(libpng15)
 %endif
 
-%description -n	%{devname}
+%description -n %{devname}
 The libpng-devel package contains the header files and libraries
 necessary for developing programs using the PNG (Portable Network
 Graphics) library.
@@ -61,7 +63,7 @@ Group:		Development/C
 Requires:	%{devname} = %{EVRD}
 Provides:	png-static-devel
 
-%description -n	%{static}
+%description -n %{static}
 This package contains a static library for development using %{name}.
 
 %package source
