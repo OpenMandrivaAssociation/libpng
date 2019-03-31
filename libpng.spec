@@ -4,13 +4,21 @@
 %define devname %mklibname png -d
 %define static %mklibname -d -s png
 
-%global optflags %{optflags} -O3
+%global optflags %{optflags} -Ofast -funroll-loops -DPIC -fPIC
+
+# PGO causes bootstrapping problems (PGO requires imagemagick
+# to get some libpng usage - imagemagick requires libpng).
+# Disable PGO while bootstrapping.
+%ifarch %{riscv}
+%bcond_with pgo
+%else
+%bcond_without pgo
+%endif
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Epoch:		2
 Version:	1.6.36
-Release:	2
+Release:	3
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -20,6 +28,11 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		https://sourceforge.net/projects/apng/files/libpng/libpng16/libpng-%{version}-apng.patch.gz
 BuildRequires:	pkgconfig(zlib)
+%if %{with pgo}
+BuildRequires:	imagemagick
+BuildRequires:	openmandriva-kde-icons
+BuildRequires:	oxygen-icons
+%endif
 
 %description
 The libpng package contains a library of functions for creating and
@@ -82,20 +95,52 @@ Group:		Development/Other
 Tools for working with/fixing up PNG files
 
 %prep
-%setup -q
-%patch0 -p0
+%autosetup -p0
 
 %build
-%global optflags %{optflags} -Ofast -funroll-loops -DPIC -fPIC
 # Do not use cmake, it is in bad shape in libpng -
 # doesn't set symbol versions which are required by LSB
+
+%if %{with pgo}
+CFLAGS="%{optflags} -fprofile-instr-generate" \
+CXXFLAGS="%{optflags} -fprofile-instr-generate" \
+LDFLAGS="%{ldflags} -fprofile-instr-generate" \
 %configure \
 %ifarch %{x86_64}
   --enable-intel-sse \
   --enable-hardware-optimizations \
 %endif
   --enable-static
+%make_build
 
+if ! [ -e .libs/libpng%{major}.so.%{major} ]; then
+	echo "Build system changed -- please fix PGO assumptions about locations."
+	exit 1
+fi
+export LLVM_PROFILE_FILE=libpng-%p.profile.d
+export LD_LIBRARY_PATH="`pwd`/.libs"
+find %{_datadir}/icons/oxygen -iname "*.png" |while read r; do
+	convert $r /tmp/test.bmp
+	convert /tmp/test.bmp /tmp/test.png
+	rm -f /tmp/test.bmp /tmp/test.png
+done
+unset LD_LIBRARY_PATH
+unset LLVM_PROFILE_FILE
+llvm-profdata merge --output=libpng.profile *.profile.d
+rm -f *.profile.d
+
+make clean
+
+CFLAGS="%{optflags} -fprofile-instr-use=$(realpath libpng.profile)" \
+CXXFLAGS="%{optflags} -fprofile-instr-use=$(realpath libpng.profile)" \
+LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
+%endif
+%configure \
+%ifarch %{x86_64}
+  --enable-intel-sse \
+  --enable-hardware-optimizations \
+%endif
+  --enable-static
 %make_build
 
 %install
