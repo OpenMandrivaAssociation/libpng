@@ -1,7 +1,11 @@
+# The 32-bit library is needed by wine.
+
 %define api 16
 %define major 16
 %define libname %mklibname png %{api} %{major}
+%define lib32name libpng%{api}_%{major}
 %define devname %mklibname png -d
+%define dev32name libpng-devel
 %define static %mklibname -d -s png
 
 %global optflags %{optflags} -Ofast -funroll-loops -DPIC -fPIC
@@ -28,6 +32,9 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		https://sourceforge.net/projects/apng/files/libpng/libpng16/libpng-%{version}-apng.patch.gz
 BuildRequires:	pkgconfig(zlib)
+%ifarch %{x86_64}
+BuildRequires:	devel(libz)
+%endif
 %if %{with pgo}
 BuildRequires:	imagemagick
 BuildRequires:	openmandriva-kde-icons
@@ -58,17 +65,32 @@ Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 Provides:	png-devel = %{EVRD}
-# FIXME this is not quite right, but will fix a great many builds...
-%if "%_lib" == "lib64"
-Provides:	devel(libpng15(64bit))
-%else
-Provides:	devel(libpng15)
-%endif
 
 %description -n %{devname}
 The libpng-devel package contains the header files and libraries
 necessary for developing programs using the PNG (Portable Network
 Graphics) library.
+
+%ifarch %{x86_64}
+%package -n %{lib32name}
+Summary:	A library of functions for manipulating PNG image format files (32-bit)
+Group:		System/Libraries
+
+%description -n	%{lib32name}
+This package contains the library needed to run programs dynamically
+linked with libpng.
+
+%package -n %{dev32name}
+Summary:	Development tools for programs to manipulate PNG image format files (32-bit)
+Group:		Development/C
+Requires:	%{lib32name} = %{EVRD}
+Requires:	%{devname} = %{EVRD}
+
+%description -n %{dev32name}
+The libpng-devel package contains the header files and libraries
+necessary for developing programs using the PNG (Portable Network
+Graphics) library.
+%endif
 
 %package -n %{static}
 Summary:	Static development library of %{name}
@@ -79,6 +101,10 @@ Provides:	png-static-devel
 %description -n %{static}
 This package contains a static library for development using %{name}.
 
+# FIXME why are we packaging this instead of letting people
+# use the src.rpm? Usually that means something Requires:
+# or BuildRequires: it, but that is typically a sign of that
+# package needing fixing...
 %package source
 Summary:	Source code of %{name}
 Group:		Development/C
@@ -97,10 +123,26 @@ Tools for working with/fixing up PNG files
 %prep
 %autosetup -p0
 
+%ifarch %{x86_64}
+CONFIGURE_TOP=`pwd`
+mkdir build32
+cd build32
+%configure32
+%endif
+
 %build
 # Do not use cmake, it is in bad shape in libpng -
 # doesn't set symbol versions which are required by LSB
 
+%ifarch %{x86_64}
+cd build32
+%make_build
+cd ..
+%endif
+
+CONFIGURE_TOP=`pwd`
+mkdir build
+cd build
 %if %{with pgo}
 CFLAGS="%{optflags} -fprofile-instr-generate" \
 CXXFLAGS="%{optflags} -fprofile-instr-generate" \
@@ -144,7 +186,11 @@ LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
 %make_build
 
 %install
-%make_install
+%ifarch %{x86_64}
+%make_install -C build32
+%endif
+
+%make_install -C build
 
 install -d %{buildroot}%{_prefix}/src/%{name}
 cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
@@ -172,3 +218,12 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
 %files source
 %{_prefix}/src/%{name}/
+
+%ifarch %{x86_64}
+%files -n %{lib32name}
+%{_prefix}/lib/libpng16.so.*
+
+%files -n %{dev32name}
+%{_prefix}/lib/*.so
+%{_prefix}/lib/pkgconfig/*.pc
+%endif
