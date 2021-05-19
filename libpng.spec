@@ -8,7 +8,7 @@
 %define dev32name libpng-devel
 %define static %mklibname -d -s png
 
-%global optflags %{optflags} -Ofast -funroll-loops -DPIC -fPIC
+%global optflags %{optflags} -O3 -DPIC -fPIC -DPNG_SAFE_LIMITS_SUPPORTED -DPNG_SKIP_SETJMP_CHECK
 
 # PGO causes bootstrapping problems (PGO requires imagemagick
 # to get some libpng usage - imagemagick requires libpng).
@@ -22,7 +22,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.6.37
-Release:	3
+Release:	4
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -31,6 +31,7 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 Patch0:		https://sourceforge.net/projects/apng/files/libpng/libpng16/libpng-%{version}-apng.patch.gz
+
 BuildRequires:	pkgconfig(zlib)
 %ifarch %{x86_64}
 BuildRequires:	devel(libz)
@@ -55,7 +56,7 @@ files.
 Summary:	A library of functions for manipulating PNG image format files
 Group:		System/Libraries
 
-%description -n	%{libname}
+%description -n %{libname}
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
@@ -76,7 +77,7 @@ Graphics) library.
 Summary:	A library of functions for manipulating PNG image format files (32-bit)
 Group:		System/Libraries
 
-%description -n	%{lib32name}
+%description -n %{lib32name}
 This package contains the library needed to run programs dynamically
 linked with libpng.
 
@@ -101,18 +102,6 @@ Provides:	png-static-devel
 %description -n %{static}
 This package contains a static library for development using %{name}.
 
-# FIXME why are we packaging this instead of letting people
-# use the src.rpm? Usually that means something Requires:
-# or BuildRequires: it, but that is typically a sign of that
-# package needing fixing...
-%package source
-Summary:	Source code of %{name}
-Group:		Development/C
-BuildArch:	noarch
-
-%description source
-This package contains the source code of %{name}.
-
 %package tools
 Summary:	Tools for working with/fixing up PNG files
 Group:		Development/Other
@@ -123,8 +112,10 @@ Tools for working with/fixing up PNG files
 %prep
 %autosetup -p0
 
+autoreconf -fiv
+
 %ifarch %{x86_64}
-CONFIGURE_TOP=`pwd`
+CONFIGURE_TOP=$(pwd)
 mkdir build32
 cd build32
 %configure32
@@ -140,19 +131,20 @@ cd build32
 cd ..
 %endif
 
-CONFIGURE_TOP=`pwd`
+CONFIGURE_TOP=$(pwd)
 mkdir build
 cd build
 %if %{with pgo}
 CFLAGS="%{optflags} -fprofile-instr-generate" \
 CXXFLAGS="%{optflags} -fprofile-instr-generate" \
-LDFLAGS="%{ldflags} -fprofile-instr-generate" \
+LDFLAGS="%{build_ldflags} -fprofile-instr-generate" \
 %configure \
-%ifarch %{x86_64}
-  --enable-intel-sse \
-  --enable-hardware-optimizations \
+    --enable-hardware-optimizations=yes \
+%ifarch aarch64
+    --enable-arm-neon=check \
 %endif
-  --enable-static
+    --enable-static
+
 %make_build
 
 if ! [ -e .libs/libpng%{major}.so.%{major} ]; then
@@ -160,7 +152,7 @@ if ! [ -e .libs/libpng%{major}.so.%{major} ]; then
 	exit 1
 fi
 export LLVM_PROFILE_FILE=libpng-%p.profile.d
-export LD_LIBRARY_PATH="`pwd`/.libs"
+export LD_LIBRARY_PATH="$(pwd)/.libs"
 find %{_datadir}/icons/oxygen -iname "*.png" |while read r; do
 	convert $r /tmp/test.bmp
 	convert /tmp/test.bmp /tmp/test.png
@@ -175,14 +167,15 @@ make clean
 
 CFLAGS="%{optflags} -fprofile-instr-use=$(realpath libpng.profile)" \
 CXXFLAGS="%{optflags} -fprofile-instr-use=$(realpath libpng.profile)" \
-LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
+LDFLAGS="%{build_ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
 %endif
 %configure \
-%ifarch %{x86_64}
-  --enable-intel-sse \
-  --enable-hardware-optimizations \
+    --enable-hardware-optimizations=yes \
+%ifarch aarch64
+    --enable-arm-neon=check \
 %endif
-  --enable-static
+    --enable-static
+
 %make_build
 
 %install
@@ -191,9 +184,6 @@ LDFLAGS="%{ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
 %endif
 
 %make_install -C build
-
-install -d %{buildroot}%{_prefix}/src/%{name}
-cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 
 %files -n %{libname}
 %{_libdir}/libpng%{api}.so.%{major}*
@@ -215,9 +205,6 @@ cp -a *.c *.h %{buildroot}%{_prefix}/src/%{name}
 %files tools
 %{_bindir}/pngfix
 %{_bindir}/png-fix-itxt
-
-%files source
-%{_prefix}/src/%{name}/
 
 %ifarch %{x86_64}
 %files -n %{lib32name}
