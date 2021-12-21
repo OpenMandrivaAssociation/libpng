@@ -13,16 +13,12 @@
 # PGO causes bootstrapping problems (PGO requires imagemagick
 # to get some libpng usage - imagemagick requires libpng).
 # Disable PGO while bootstrapping.
-%ifarch %{riscv}
-%bcond_with pgo
-%else
 %bcond_without pgo
-%endif
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.6.37
-Release:	4
+Release:	5
 License:	zlib
 Group:		System/Libraries
 Url:		http://www.libpng.org/pub/png/libpng.html
@@ -107,7 +103,7 @@ Summary:	Tools for working with/fixing up PNG files
 Group:		Development/Other
 
 %description tools
-Tools for working with/fixing up PNG files
+Tools for working with/fixing up PNG files.
 
 %prep
 %autosetup -p0
@@ -135,9 +131,11 @@ CONFIGURE_TOP=$(pwd)
 mkdir build
 cd build
 %if %{with pgo}
-CFLAGS="%{optflags} -fprofile-instr-generate" \
-CXXFLAGS="%{optflags} -fprofile-instr-generate" \
-LDFLAGS="%{build_ldflags} -fprofile-instr-generate" \
+export LD_LIBRARY_PATH="$(pwd)"
+
+CFLAGS="%{optflags} -fprofile-generate -mllvm -vp-counters-per-site=8" \
+CXXFLAGS="%{optflags} -fprofile-generate" \
+LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %configure \
     --enable-hardware-optimizations=yes \
 %ifarch aarch64
@@ -148,26 +146,27 @@ LDFLAGS="%{build_ldflags} -fprofile-instr-generate" \
 %make_build
 
 if ! [ -e .libs/libpng%{major}.so.%{major} ]; then
-	echo "Build system changed -- please fix PGO assumptions about locations."
-	exit 1
+    printf '%s\n' "Build system changed -- please fix PGO assumptions about locations."
+    exit 1
 fi
-export LLVM_PROFILE_FILE=libpng-%p.profile.d
+
 export LD_LIBRARY_PATH="$(pwd)/.libs"
 find %{_datadir}/icons/oxygen -iname "*.png" |while read r; do
-	convert $r /tmp/test.bmp
-	convert /tmp/test.bmp /tmp/test.png
-	rm -f /tmp/test.bmp /tmp/test.png
+    convert $r /tmp/test.bmp
+    convert /tmp/test.bmp /tmp/test.png
+    rm -f /tmp/test.bmp /tmp/test.png
 done
+
 unset LD_LIBRARY_PATH
-unset LLVM_PROFILE_FILE
-llvm-profdata merge --output=libpng.profile *.profile.d
-rm -f *.profile.d
+llvm-profdata merge --output=%{name}-llvm.profdata $(find . -name "*.profraw" -type f)
+PROFDATA="$(realpath %{name}-llvm.profdata)"
+rm -f *.profraw
 
 make clean
 
-CFLAGS="%{optflags} -fprofile-instr-use=$(realpath libpng.profile)" \
-CXXFLAGS="%{optflags} -fprofile-instr-use=$(realpath libpng.profile)" \
-LDFLAGS="%{build_ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
+CFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
+CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
+LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %configure \
     --enable-hardware-optimizations=yes \
@@ -196,7 +195,7 @@ LDFLAGS="%{build_ldflags} -fprofile-instr-use=$(realpath libpng.profile)" \
 %{_libdir}/libpng%{api}.so
 %{_libdir}/libpng.so
 %{_libdir}/pkgconfig/libpng*.pc
-%{_mandir}/man?/*
+%doc %{_mandir}/man?/*
 
 %files -n %{static}
 %{_libdir}/libpng.a
