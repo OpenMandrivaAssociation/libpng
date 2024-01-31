@@ -17,7 +17,7 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.6.40
+Version:	1.6.42
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -26,7 +26,7 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-Patch0:		https://sourceforge.net/projects/libpng-apng/files/libpng16/1.6.39/libpng-1.6.39-apng.patch.gz
+Patch0:		https://sourceforge.net/projects/libpng-apng/files/libpng16/1.6.40/libpng-1.6.40-apng.patch.gz
 
 BuildRequires:	pkgconfig(zlib)
 %ifarch %{x86_64}
@@ -35,7 +35,7 @@ BuildRequires:	devel(libz)
 %if %{with pgo}
 BuildRequires:	imagemagick
 BuildRequires:	openmandriva-kde-icons
-BuildRequires:	oxygen-icons
+BuildRequires:	(oxygen-icons or kf6-oxygen-icons)
 %endif
 
 %description
