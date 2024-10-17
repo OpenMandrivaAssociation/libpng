@@ -21,7 +21,7 @@ Version:	1.6.44
 Release:	1
 License:	zlib
 Group:		System/Libraries
-Url:		http://www.libpng.org/pub/png/libpng.html
+Url:		https://www.libpng.org/pub/png/libpng.html
 Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
