@@ -1,0 +1,76 @@
+diff -up libpng-1.6.50/configure.ac.omv~ libpng-1.6.50/configure.ac
+--- libpng-1.6.50/configure.ac.omv~	2025-11-13 22:46:50.903862699 +0000
++++ libpng-1.6.50/configure.ac	2025-11-13 22:47:08.453926356 +0000
+@@ -711,7 +711,7 @@ then
+ #ifndef COMPAT_HWCAP_ISA_V /* added in linux-6.5 */
+ #error "COMPAT_HWCAP_ISA_V is not available"
+ #endif
+-int main() {
++int main() __attribute__((target("arch=rv64gcv"))) {
+    const float src[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+    uint64_t ptr[2] = {0x0908060504020100, 0xFFFFFFFF0E0D0C0A};
+    vuint8m1_t a = __riscv_vreinterpret_v_u64m1_u8m1(__riscv_vle64_v_u64m1(ptr, 2));
+diff -up libpng-1.6.50/riscv/filter_rvv_intrinsics.c.omv~ libpng-1.6.50/riscv/filter_rvv_intrinsics.c
+--- libpng-1.6.50/riscv/filter_rvv_intrinsics.c.omv~	2025-11-13 22:46:15.483734497 +0000
++++ libpng-1.6.50/riscv/filter_rvv_intrinsics.c	2025-11-13 22:49:55.944537764 +0000
+@@ -18,7 +18,7 @@
+ 
+ #include <riscv_vector.h>
+ 
+-void
++__attribute__((target("arch=rv64gcv"))) void
+ png_read_filter_row_up_rvv(png_row_infop row_info, png_bytep row,
+     png_const_bytep prev_row)
+ {
+@@ -37,7 +37,7 @@ png_read_filter_row_up_rvv(png_row_infop
+    }
+ }
+ 
+-static inline void
++__attribute__((target("arch=rv64gcv"))) static inline void
+ png_read_filter_row_sub_rvv(size_t len, size_t bpp, unsigned char* row)
+ {
+    png_bytep rp_end = row + len;
+@@ -93,7 +93,7 @@ png_read_filter_row_sub4_rvv(png_row_inf
+    PNG_UNUSED(prev_row)
+ }
+ 
+-static inline void
++__attribute__((target("arch=rv64gcv"))) static inline void
+ png_read_filter_row_avg_rvv(size_t len, size_t bpp, unsigned char* row,
+     const unsigned char* prev_row)
+ {
+@@ -180,7 +180,7 @@ png_read_filter_row_avg4_rvv(png_row_inf
+ #define MIN_CHUNK_LEN 256
+ #define MAX_CHUNK_LEN 2048
+ 
+-static inline vuint8m1_t
++__attribute__((target("arch=rv64gcv"))) static inline vuint8m1_t
+ prefix_sum(vuint8m1_t chunk, unsigned char* carry, size_t vl,
+     size_t max_chunk_len)
+ {
+@@ -204,7 +204,7 @@ prefix_sum(vuint8m1_t chunk, unsigned ch
+    return chunk;
+ }
+ 
+-static inline vint16m1_t
++__attribute__((target("arch=rv64gcv"))) static inline vint16m1_t
+ abs_diff(vuint16m1_t a, vuint16m1_t b, size_t vl)
+ {
+    vint16m1_t diff = __riscv_vreinterpret_v_u16m1_i16m1(__riscv_vsub_vv_u16m1(a, b, vl));
+@@ -212,13 +212,13 @@ abs_diff(vuint16m1_t a, vuint16m1_t b, s
+    return __riscv_vrsub_vx_i16m1_m(mask, diff, 0, vl);
+ }
+ 
+-static inline vint16m1_t
++__attribute__((target("arch=rv64gcv"))) static inline vint16m1_t
+ abs_sum(vint16m1_t a, vint16m1_t b, size_t vl)
+ {
+    return __riscv_vadd_vv_i16m1(a, b, vl);
+ }
+ 
+-static inline void
++__attribute__((target("arch=rv64gcv"))) static inline void
+ png_read_filter_row_paeth_rvv(size_t len, size_t bpp, unsigned char* row,
+     const unsigned char* prev)
+ {
