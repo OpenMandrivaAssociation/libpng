@@ -1,18 +1,18 @@
-diff -up libpng-1.6.50/configure.ac.omv~ libpng-1.6.50/configure.ac
---- libpng-1.6.50/configure.ac.omv~	2025-11-13 22:46:50.903862699 +0000
-+++ libpng-1.6.50/configure.ac	2025-11-13 22:47:08.453926356 +0000
-@@ -711,7 +711,7 @@ then
- #ifndef COMPAT_HWCAP_ISA_V /* added in linux-6.5 */
- #error "COMPAT_HWCAP_ISA_V is not available"
- #endif
+diff -up libpng-1.6.51/configure.ac.2~ libpng-1.6.51/configure.ac
+--- libpng-1.6.51/configure.ac.2~	2025-11-21 22:01:00.000000000 +0100
++++ libpng-1.6.51/configure.ac	2025-11-22 03:46:47.591729585 +0100
+@@ -707,7 +707,7 @@ then
+ 
+    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+ #include <riscv_vector.h>
 -int main() {
 +int main() __attribute__((target("arch=rv64gcv"))) {
     const float src[] = { 0.0f, 0.0f, 0.0f, 0.0f };
     uint64_t ptr[2] = {0x0908060504020100, 0xFFFFFFFF0E0D0C0A};
     vuint8m1_t a = __riscv_vreinterpret_v_u64m1_u8m1(__riscv_vle64_v_u64m1(ptr, 2));
-diff -up libpng-1.6.50/riscv/filter_rvv_intrinsics.c.omv~ libpng-1.6.50/riscv/filter_rvv_intrinsics.c
---- libpng-1.6.50/riscv/filter_rvv_intrinsics.c.omv~	2025-11-13 22:46:15.483734497 +0000
-+++ libpng-1.6.50/riscv/filter_rvv_intrinsics.c	2025-11-13 22:49:55.944537764 +0000
+diff -up libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~ libpng-1.6.51/riscv/filter_rvv_intrinsics.c
+--- libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~	2025-11-21 22:01:00.000000000 +0100
++++ libpng-1.6.51/riscv/filter_rvv_intrinsics.c	2025-11-22 03:46:02.039548434 +0100
 @@ -18,7 +18,7 @@
  
  #include <riscv_vector.h>
