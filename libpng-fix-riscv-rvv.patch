@@ -1,6 +1,6 @@
-diff -up libpng-1.6.51/configure.ac.2~ libpng-1.6.51/configure.ac
---- libpng-1.6.51/configure.ac.2~	2025-11-21 22:01:00.000000000 +0100
-+++ libpng-1.6.51/configure.ac	2025-11-22 03:46:47.591729585 +0100
+diff -up libpng-1.6.53/configure.ac.2~ libpng-1.6.53/configure.ac
+--- libpng-1.6.53/configure.ac.2~	2025-12-05 22:46:38.000000000 +0100
++++ libpng-1.6.53/configure.ac	2025-12-06 02:26:21.378628280 +0100
 @@ -707,7 +707,7 @@ then
  
     AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
@@ -10,10 +10,10 @@ diff -up libpng-1.6.51/configure.ac.2~ libpng-1.6.51/configure.ac
     const float src[] = { 0.0f, 0.0f, 0.0f, 0.0f };
     uint64_t ptr[2] = {0x0908060504020100, 0xFFFFFFFF0E0D0C0A};
     vuint8m1_t a = __riscv_vreinterpret_v_u64m1_u8m1(__riscv_vle64_v_u64m1(ptr, 2));
-diff -up libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~ libpng-1.6.51/riscv/filter_rvv_intrinsics.c
---- libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~	2025-11-21 22:01:00.000000000 +0100
-+++ libpng-1.6.51/riscv/filter_rvv_intrinsics.c	2025-11-22 03:46:02.039548434 +0100
-@@ -18,7 +18,7 @@
+diff -up libpng-1.6.53/riscv/filter_rvv_intrinsics.c.2~ libpng-1.6.53/riscv/filter_rvv_intrinsics.c
+--- libpng-1.6.53/riscv/filter_rvv_intrinsics.c.2~	2025-12-05 22:46:38.000000000 +0100
++++ libpng-1.6.53/riscv/filter_rvv_intrinsics.c	2025-12-06 02:28:12.916691276 +0100
+@@ -21,7 +21,7 @@
  
  #include <riscv_vector.h>
  
@@ -22,7 +22,7 @@ diff -up libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~ libpng-1.6.51/riscv/filt
  png_read_filter_row_up_rvv(png_row_infop row_info, png_bytep row,
      png_const_bytep prev_row)
  {
-@@ -37,7 +37,7 @@ png_read_filter_row_up_rvv(png_row_infop
+@@ -40,7 +40,7 @@ png_read_filter_row_up_rvv(png_row_infop
     }
  }
  
@@ -31,7 +31,7 @@ diff -up libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~ libpng-1.6.51/riscv/filt
  png_read_filter_row_sub_rvv(size_t len, size_t bpp, unsigned char* row)
  {
     png_bytep rp_end = row + len;
-@@ -93,7 +93,7 @@ png_read_filter_row_sub4_rvv(png_row_inf
+@@ -96,7 +96,7 @@ png_read_filter_row_sub4_rvv(png_row_inf
     PNG_UNUSED(prev_row)
  }
  
@@ -40,33 +40,8 @@ diff -up libpng-1.6.51/riscv/filter_rvv_intrinsics.c.2~ libpng-1.6.51/riscv/filt
  png_read_filter_row_avg_rvv(size_t len, size_t bpp, unsigned char* row,
      const unsigned char* prev_row)
  {
-@@ -180,7 +180,7 @@ png_read_filter_row_avg4_rvv(png_row_inf
- #define MIN_CHUNK_LEN 256
- #define MAX_CHUNK_LEN 2048
- 
--static inline vuint8m1_t
-+__attribute__((target("arch=rv64gcv"))) static inline vuint8m1_t
- prefix_sum(vuint8m1_t chunk, unsigned char* carry, size_t vl,
-     size_t max_chunk_len)
- {
-@@ -204,7 +204,7 @@ prefix_sum(vuint8m1_t chunk, unsigned ch
-    return chunk;
- }
- 
--static inline vint16m1_t
-+__attribute__((target("arch=rv64gcv"))) static inline vint16m1_t
- abs_diff(vuint16m1_t a, vuint16m1_t b, size_t vl)
- {
-    vint16m1_t diff = __riscv_vreinterpret_v_u16m1_i16m1(__riscv_vsub_vv_u16m1(a, b, vl));
-@@ -212,13 +212,13 @@ abs_diff(vuint16m1_t a, vuint16m1_t b, s
-    return __riscv_vrsub_vx_i16m1_m(mask, diff, 0, vl);
- }
- 
--static inline vint16m1_t
-+__attribute__((target("arch=rv64gcv"))) static inline vint16m1_t
- abs_sum(vint16m1_t a, vint16m1_t b, size_t vl)
- {
-    return __riscv_vadd_vv_i16m1(a, b, vl);
+@@ -177,7 +177,7 @@ png_read_filter_row_avg4_rvv(png_row_inf
+    PNG_UNUSED(prev_row)
  }
  
 -static inline void
