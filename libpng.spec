@@ -33,6 +33,11 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 Patch0:		https://downloads.sourceforge.net/project/libpng-apng/libpng16/%{apng_version}/libpng-%{apng_version}-apng.patch.gz
 Patch1:		libpng-fix-riscv-rvv.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(zlib)
 %ifarch %{x86_64}
 BuildRequires:	devel(libz)
