@@ -167,6 +167,9 @@ LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %ifarch %{riscv}
     --enable-riscv-rvv=check \
 %endif
+%ifarch %{loongarch64}
+    --enable-loongarch-lsx \
+%endif
     --enable-static
 
 %make_build
@@ -201,6 +204,9 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %ifarch %{riscv}
     --enable-riscv-rvv=check \
+%endif
+%ifarch %{loongarch64}
+    --enable-loongarch-lsx \
 %endif
     --enable-static
 
