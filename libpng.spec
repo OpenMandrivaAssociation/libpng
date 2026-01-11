@@ -161,11 +161,11 @@ CXXFLAGS="%{optflags} -fprofile-generate" \
 LDFLAGS="%{build_ldflags} -fprofile-generate" \
 %configure \
     --enable-hardware-optimizations=yes \
-%ifarch %{aarch64}
-    --enable-arm-neon=check \
+%ifarch %{armx}
+    --enable-arm-neon \
 %endif
 %ifarch %{riscv}
-    --enable-riscv-rvv=check \
+    --enable-riscv-rvv \
 %endif
 %ifarch %{loongarch64}
     --enable-loongarch-lsx \
@@ -199,11 +199,11 @@ LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
 %configure \
     --enable-hardware-optimizations=yes \
-%ifarch %{aarch64}
-    --enable-arm-neon=check \
+%ifarch %{armx}
+    --enable-arm-neon \
 %endif
 %ifarch %{riscv}
-    --enable-riscv-rvv=check \
+    --enable-riscv-rvv \
 %endif
 %ifarch %{loongarch64}
     --enable-loongarch-lsx \
