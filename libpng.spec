@@ -32,6 +32,7 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 %define apng_version 1.6.53
 Patch0:		https://downloads.sourceforge.net/project/libpng-apng/libpng16/%{apng_version}/libpng-%{apng_version}-apng.patch.gz
 Patch1:		libpng-fix-riscv-rvv.patch
+Patch2:		libpng-enforce-symbol-versions.patch
 
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -132,11 +133,13 @@ Tools for working with/fixing up PNG files.
 %autosetup -p1
 
 autoreconf -fiv
+autoconf
 
 %ifarch %{x86_64}
 CONFIGURE_TOP=$(pwd)
 mkdir build32
 cd build32
+LD=%{__ld} \
 %configure32
 %endif
 
@@ -156,6 +159,7 @@ cd build
 %if %{with pgo}
 export LD_LIBRARY_PATH="$(pwd)"
 
+LD="%{__ld}" \
 CFLAGS="%{optflags} -fprofile-generate -mllvm -vp-counters-per-site=8" \
 CXXFLAGS="%{optflags} -fprofile-generate" \
 LDFLAGS="%{build_ldflags} -fprofile-generate" \
@@ -197,6 +201,7 @@ CFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
 CXXFLAGS="%{optflags} -fprofile-use=$PROFDATA" \
 LDFLAGS="%{build_ldflags} -fprofile-use=$PROFDATA" \
 %endif
+LD="%{__ld}" \
 %configure \
     --enable-hardware-optimizations=yes \
 %ifarch %{armx}

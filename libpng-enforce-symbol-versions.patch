@@ -1,0 +1,21 @@
+diff -up libpng-1.6.54/configure.ac.3~ libpng-1.6.54/configure.ac
+--- libpng-1.6.54/configure.ac.3~	2026-01-13 14:47:27.812311128 +0100
++++ libpng-1.6.54/configure.ac	2026-01-13 14:49:01.062201781 +0100
+@@ -203,7 +203,7 @@ case $host in
+     AC_MSG_RESULT(no)
+ ;;
+ * )
+-
++test -z "$LD" && LD=ld
+ if test "$have_solaris_ld" = "yes"; then
+     GLD=`$LD --help < /dev/null 2>&1 | grep 'M mapfile'`
+ else
+@@ -216,7 +216,7 @@ if test "$GLD"; then
+ else
+     have_ld_version_script=no
+     AC_MSG_RESULT(no)
+-    AC_MSG_WARN(*** You have not enabled versioned symbols.)
++    AC_MSG_ERROR(*** You have not enabled versioned symbols in $LD: $GLD.)
+ fi
+ ;;
+ esac
