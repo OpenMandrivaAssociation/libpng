@@ -19,7 +19,7 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.6.53
+Version:	1.6.54
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -29,7 +29,7 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 # This should usually be set to %{version} -- but sometimes the apng patch is a bit behind.
-%define apng_version 1.6.51
+%define apng_version 1.6.53
 Patch0:		https://downloads.sourceforge.net/project/libpng-apng/libpng16/%{apng_version}/libpng-%{apng_version}-apng.patch.gz
 Patch1:		libpng-fix-riscv-rvv.patch
 
@@ -181,8 +181,8 @@ fi
 
 export LD_LIBRARY_PATH="$(pwd)/.libs"
 find %{_datadir}/icons/oxygen -iname "*.png" |while read r; do
-    convert $r /tmp/test.bmp
-    convert /tmp/test.bmp /tmp/test.png
+    magick $r /tmp/test.bmp
+    magick /tmp/test.bmp /tmp/test.png
     rm -f /tmp/test.bmp /tmp/test.png
 done
 
