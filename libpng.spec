@@ -19,7 +19,7 @@
 
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
-Version:	1.6.54
+Version:	1.6.55
 Release:	1
 License:	zlib
 Group:		System/Libraries
@@ -29,14 +29,13 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
 # This should usually be set to %{version} -- but sometimes the apng patch is a bit behind.
-%define apng_version 1.6.53
+%define apng_version 1.6.54
 Patch0:		https://downloads.sourceforge.net/project/libpng-apng/libpng16/%{apng_version}/libpng-%{apng_version}-apng.patch.gz
 Patch1:		libpng-fix-riscv-rvv.patch
 Patch2:		libpng-enforce-symbol-versions.patch
 
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
 BuildRequires:	pkgconfig(zlib)
