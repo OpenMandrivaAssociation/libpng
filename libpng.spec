@@ -20,7 +20,7 @@
 Summary:	A library of functions for manipulating PNG image format files
 Name:		libpng
 Version:	1.6.59
-Release:	1
+Release:	2
 License:	zlib
 Group:		System/Libraries
 Url:		https://www.libpng.org/pub/png/libpng.html
@@ -41,7 +41,7 @@ BuildRequires:	make
 BuildRequires:	pkgconfig(zlib)
 %ifarch %{x86_64}
 BuildRequires:	devel(libz)
-# %configure32 uses clang -m32, which cannot link in the build chroot.
+# The 32-bit configure uses clang -m32, which cannot link in the build chroot.
 BuildRequires:	gcc
 BuildRequires:	lib64gcc-devel
 %endif
