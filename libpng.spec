@@ -28,7 +28,7 @@ Source0:	http://download.sourceforge.net/%{name}/%{name}-%{version}.tar.xz
 # (tpg) APNG support http://littlesvr.ca/apng/
 # (tpg) http://hp.vector.co.jp/authors/VA013651/freeSoftware/apng.html
 # (tpg) http://sourceforge.net/projects/libpng-apng/ <- use this one
-# This should usually be set to %{version} -- but sometimes the apng patch is a bit behind.
+# This should usually match the library version. Sometimes the apng patch is a bit behind.
 %define apng_version 1.6.58
 Patch0:		https://downloads.sourceforge.net/project/libpng-apng/libpng16/%{apng_version}/libpng-%{apng_version}-apng.patch.gz
 Patch1:		libpng-fix-riscv-rvv.patch
@@ -41,6 +41,9 @@ BuildRequires:	make
 BuildRequires:	pkgconfig(zlib)
 %ifarch %{x86_64}
 BuildRequires:	devel(libz)
+# %configure32 uses clang -m32, which cannot link in the build chroot.
+BuildRequires:	gcc
+BuildRequires:	lib64gcc-devel
 %endif
 %if %{with pgo}
 BuildRequires:	imagemagick
@@ -138,7 +141,7 @@ autoconf
 CONFIGURE_TOP=$(pwd)
 mkdir build32
 cd build32
-LD=%{__ld} \
+CC=gcc CXX=g++ LD=%{__ld} \
 %configure32
 %endif
 
